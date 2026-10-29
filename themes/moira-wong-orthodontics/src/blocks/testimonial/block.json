@@ -1,0 +1,66 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/testimonial",
+	"title": "Testimonial",
+	"category": "mw",
+	"icon": "format-quote",
+	"description": "A card with a before and an after photo, a short quote, who said it and a few lines of text.",
+	"keywords": [ "testimonial", "review", "before after" ],
+	"parent": [ "mw/testimonials" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"afterId": { "type": "number" },
+		"afterUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-testimonial__photo--after img",
+			"attribute": "src",
+			"default": ""
+		},
+		"afterAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-testimonial__photo--after img",
+			"attribute": "alt",
+			"default": ""
+		},
+		"beforeId": { "type": "number" },
+		"beforeUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-testimonial__photo--before img",
+			"attribute": "src",
+			"default": ""
+		},
+		"beforeAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-testimonial__photo--before img",
+			"attribute": "alt",
+			"default": ""
+		},
+		"quote": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-testimonial__quote"
+		},
+		"name": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-testimonial__name"
+		},
+		"text": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-testimonial__text"
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

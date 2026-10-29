@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/testimonials",
+	"title": "Testimonials",
+	"category": "mw",
+	"icon": "format-quote",
+	"description": "A heading with rules at its sides and any number of testimonial cards.",
+	"keywords": [ "testimonials", "reviews", "before after", "quotes" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-testimonials__title"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

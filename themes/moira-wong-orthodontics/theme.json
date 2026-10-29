@@ -15,6 +15,7 @@
 				{ "slug": "contrast", "name": "Slate", "color": "#252f37" },
 				{ "slug": "primary", "name": "Yellow", "color": "#e8ce2c" },
 				{ "slug": "amber", "name": "Amber", "color": "#edba3d" },
+				{ "slug": "primary-line", "name": "Yellow Line", "color": "#f3e58e" },
 				{ "slug": "primary-dark", "name": "Yellow Dark", "color": "#dfc318" },
 				{ "slug": "primary-light", "name": "Yellow Light", "color": "#f0da46" },
 				{ "slug": "link-hover", "name": "Link Hover Brown", "color": "#8a4516" },

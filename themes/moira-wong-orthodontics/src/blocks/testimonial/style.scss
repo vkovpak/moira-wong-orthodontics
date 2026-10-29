@@ -1,0 +1,326 @@
+// One testimonial card (a child of mw/testimonials, which sets --mw-gap and
+// --mw-pad). 416px wide at full size: 45px of side padding around 326px of
+// content. The round before/after photos stick out of its top-left corner and
+// the quote sits to the right of them.
+$photos-w: 260px;
+$photos-h: 270px;
+// Photo and ring sizes: 192px and 138px photos, a 4px white gap, a 2px ring.
+$after: 192px;
+$before: 138px;
+$gap: 4px;
+$ring: 2px;
+// Centres of the two circles inside the 260 x 270 box that holds them.
+$after-x: 102px;
+$after-y: 167px;
+$before-x: 185px;
+$before-y: 75px;
+// Where the box sits: the ring of the big circle starts 54px left of the card
+// and the ring of the small one 84px above it (the card element starts there).
+$stick-left: 54px;
+$stick-top: 84px;
+// Where the quote starts at full size, counted from the card's left edge, and
+// the card's side padding at that size: the quote area is that wide and keeps
+// its width when the card narrows; only the room on both sides of it shrinks.
+$quote-from: 18.1rem;
+$pad-full: 45px;
+$quote-left: calc(#{$quote-from} - #{$pad-full} + var(--mw-pad));
+// Radii of the white discs (photo plus gap) and of the yellow ones (plus ring).
+$after-white: $after * 0.5 + $gap;
+$before-white: $before * 0.5 + $gap;
+$after-ring: $after-white + $ring;
+$before-ring: $before-white + $ring;
+
+// A hard-edged disc of colour $c and radius $r centred at ($x, $y).
+@function disc($x, $y, $c, $r) {
+
+	@return radial-gradient(
+		circle at #{$x} #{$y},
+		$c #{$r - 0.5px},
+		transparent $r
+	);
+}
+
+.mw-testimonial {
+	--mw-ring: var(--wp--preset--color--primary-line);
+	--mw-white: var(--wp--preset--color--base);
+
+	position: relative;
+	flex: none;
+	box-sizing: border-box;
+	width: calc(326px + 2 * var(--mw-pad));
+	max-width: 100%;
+	margin: 0 var(--mw-gap);
+	font-weight: 300;
+	isolation: isolate;
+
+	// The card's box. The element itself reaches up to the top of the photos
+	// (so the editor's block toolbar and selection outline take them in), the
+	// box starts lower. It is ::before: the editor draws the outline on ::after.
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border: 1px solid var(--wp--preset--color--primary);
+		border-radius: 2rem;
+		background: var(--mw-white);
+	}
+
+	// A card with photos, and (so that all the boxes are the same size) a card
+	// without any next to one that has them.
+	&.has-photos,
+	.mw-testimonials__list:has(.has-photos) & {
+		padding-top: $stick-top;
+
+		&::before {
+			top: $stick-top;
+		}
+	}
+}
+
+// In a list with photos, a row made only of cards without photos needs just
+// half of that room above it. Two cards sit in a row, so a row is: an odd card
+// and the one after it, or the odd last card alone; a row with a photo in it
+// keeps the full room so that its boxes stay the same size.
+$no-photo: ".mw-testimonials__list:has(.has-photos) .mw-testimonial:not(.has-photos)";
+
+#{$no-photo}:nth-child(odd):has(+ .mw-testimonial:not(.has-photos)),
+#{$no-photo} + .mw-testimonial:not(.has-photos):nth-child(even),
+#{$no-photo}:nth-child(odd):last-child {
+	padding-top: $stick-top * 0.5;
+
+	&::before {
+		top: $stick-top * 0.5;
+	}
+}
+
+// The photos and their common outline. The yellow outline follows the outer
+// edge of both circles together: a yellow disc under each, then a white disc
+// one gap wider than each photo (the photo's white margin), so the lines never
+// cross inside. All of it is one layer (::before) under the two photos, so the
+// small photo sits straight on the big one without a white margin cut into it.
+// ::after is a white strip over the card's top line: the line is left out where
+// the photos are, and a little beyond them.
+.mw-testimonial__photos {
+	position: absolute;
+	top: 1px;
+	left: calc(1px - #{$stick-left});
+	z-index: 1;
+	width: $photos-w;
+	height: $photos-h;
+	isolation: isolate;
+	pointer-events: none;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		background:
+			disc($before-x, $before-y, var(--mw-white), $before-white),
+			disc($after-x, $after-y, var(--mw-white), $after-white),
+			disc($before-x, $before-y, var(--mw-ring), $before-ring),
+			disc($after-x, $after-y, var(--mw-ring), $after-ring);
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		// Under the rings, so it never cuts into their yellow line.
+		z-index: -1;
+		// The card's top edge, measured in this box.
+		top: calc(#{$stick-top} - 1px);
+		left: calc(#{$stick-left} - 1px);
+		width: 23.8rem;
+		height: 1px;
+		background: var(--mw-white);
+	}
+}
+
+.mw-testimonial__photo {
+	position: absolute;
+	overflow: hidden;
+	border-radius: 50%;
+	pointer-events: auto;
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	// AFTER / BEFORE caption over the picture.
+	&::after {
+		position: absolute;
+		color: var(--mw-white);
+		font-size: 1.2rem;
+		font-weight: 600;
+		line-height: 1;
+		text-transform: uppercase;
+		pointer-events: none;
+	}
+
+	&--after {
+		z-index: 1;
+		top: $after-y - $after * 0.5;
+		left: $after-x - $after * 0.5;
+		width: $after;
+		height: $after;
+
+		&::after {
+			content: "After";
+			top: 2.5rem;
+			left: 4.2rem;
+		}
+	}
+
+	&--before {
+		z-index: 2;
+		top: $before-y - $before * 0.5;
+		left: $before-x - $before * 0.5;
+		width: $before;
+		height: $before;
+
+		&::after {
+			content: "Before";
+			top: 1.4rem;
+			right: 0;
+			left: 0;
+			text-align: center;
+		}
+	}
+}
+
+// The quote block stays clear of the photos on the left; the card's own side
+// padding is on the right. It reaches down below the big photo, so the text
+// under it always starts there. A short quote is centred in that height; a long
+// one makes the block taller and pushes the text down.
+.mw-testimonial__head {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+	min-height: 19.9rem;
+	padding-block: 1.6rem;
+	padding-inline: $quote-left var(--mw-pad);
+	text-align: center;
+}
+
+.mw-testimonial:not(.has-photos) {
+	.mw-testimonial__head {
+		min-height: 0;
+		padding: 2.6rem var(--mw-pad) 2rem;
+	}
+
+	// Nothing to the left of the quote, so the text under it is centred too.
+	.mw-testimonial__text {
+		text-align: center;
+	}
+}
+
+// Smile: two 5px dots, 5px apart, and the bottom 11px of a 29px circle, 3px
+// below the dots. The top of the circle is hidden by the white strip the dots
+// sit on.
+.mw-testimonial__smile {
+	position: relative;
+	display: block;
+	width: 29px;
+	height: 19px;
+	margin: 0 auto 1.3rem;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: -10px;
+		left: 0;
+		box-sizing: border-box;
+		width: 29px;
+		height: 29px;
+		border: 2px solid var(--wp--preset--color--primary);
+		border-radius: 50%;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0 0 auto;
+		height: 8px;
+		background:
+			disc(9.5px, 2.5px, var(--wp--preset--color--primary), 3px),
+			disc(19.5px, 2.5px, var(--wp--preset--color--primary), 3px),
+			var(--mw-white);
+	}
+}
+
+// Descendant selectors: in the editor the fields are the same elements, but the
+// theme's paragraph rules (line height) must lose here too.
+.mw-testimonial {
+	.mw-testimonial__quote {
+		margin: 0;
+		font-size: 2.6rem;
+		font-weight: 400;
+		line-height: 1.1;
+	}
+
+	.mw-testimonial__name {
+		margin: 0.9rem 0 0;
+		font-size: 1.6rem;
+		font-weight: 300;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	.mw-testimonial__text {
+		margin: 0;
+		padding: 0 var(--mw-pad) 3rem;
+		font-size: 2rem;
+		font-weight: 300;
+		line-height: 1.2;
+	}
+}
+
+// In one column (the cards stack below this container width, see
+// testimonials/style.scss) every card is a row of its own.
+$stack-at: 926px;
+
+@container (max-width: #{$stack-at}) {
+	#{$no-photo} {
+		padding-top: $stick-top * 0.5;
+
+		&::before {
+			top: $stick-top * 0.5;
+		}
+	}
+}
+
+// A narrow container (a phone): the photos sit above the text, the big one in
+// the middle of the card, and the text is centred under them. 491px = 326px of
+// text + 2 * 22.5px of padding + 2 * 60px of room beside a card (see
+// testimonials/style.scss).
+$center-at: 491px;
+
+@container (max-width: #{$center-at}) {
+	.mw-testimonial.has-photos {
+		.mw-testimonial__photos {
+			left: calc(50% - #{$after-x});
+
+			// The white strip over the card's line covers the photos' width, a
+			// little to the right of where it starts in the wide layout.
+			&::after {
+				left: 10%;
+				width: 94%;
+			}
+		}
+
+		.mw-testimonial__head {
+			min-height: 0;
+			padding: 21rem var(--mw-pad) 2rem;
+		}
+
+		.mw-testimonial__text {
+			text-align: center;
+		}
+	}
+}

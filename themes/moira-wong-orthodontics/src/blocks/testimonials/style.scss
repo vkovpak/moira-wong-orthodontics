@@ -1,0 +1,119 @@
+@use "sass:math";
+
+// A heading with a rule on each side, then the cards. The widths follow the
+// container (the section, via cqi) and are laid out for 1200px: two 416px
+// cards, each with the same room beside it, and 36px extra on the left of the
+// row. When the screen narrows, in this order:
+//   1. the room beside the cards and the 36px shrink to half,
+//   2. the cards narrow as their 45px side padding shrinks to half,
+//   3. below that the cards stack in one column: the side padding is back to
+//      45px and shrinks to half again as the container narrows, each card has
+//      60px beside it (room for the photo that sticks out on the left),
+//   4. with the padding at half, the photos move above the text in the middle
+//      of the card and the 60px go: from here on only the card's width shrinks.
+// Only $card-core (the width of the text in a card, wide enough for the longest
+// line of a description) and the paddings are set; the rest follows from them.
+$card-core: 326px;
+$pad-max: 45px;
+$pad-min: 22.5px;
+$indent-max: 36px;
+$indent-min: 18px;
+$full: 1200px;
+$card-max: $card-core + 2 * $pad-max;
+$card-min: $card-core + 2 * $pad-min;
+// Room beside each card (on both sides) at 1200px and at half of it.
+$gap-max: ($full - $indent-max - 2 * $card-max) * 0.25;
+$gap-min: $gap-max * 0.5;
+// Container widths where the first step ends and the second one ends.
+$phase-1-end: 4 * $gap-min + $indent-min + 2 * $card-max;
+$phase-2-end: 4 * $gap-min + $indent-min + 2 * $card-min;
+// In one column: room on each side of a card, the container width where the
+// padding has shrunk to half again (the photos then move above the text; the
+// same number is $center-at in testimonial/style.scss) and the offset that
+// turns the container width into that padding.
+$col-margin: 60px;
+$center-at: $card-min + 2 * $col-margin;
+$col-pad-offset: ($card-core + 2 * $col-margin) * 0.5;
+$col-pad: clamp(#{$pad-min}, calc(50cqi - #{$col-pad-offset}), #{$pad-max});
+// How much the room and the row's left margin lose per px of container width
+// during the first step, and the card padding during the second.
+$gap-slope: math.div($gap-max - $gap-min, $full - $phase-1-end);
+$indent-slope: math.div($indent-max - $indent-min, $full - $phase-1-end);
+$over: calc(100cqi - #{$phase-1-end});
+$gap-calc: calc(#{$gap-min} + #{$over} * #{$gap-slope});
+$indent-calc: calc(#{$indent-min} + #{$over} * #{$indent-slope});
+$pad-calc: calc(#{$pad-min} + (100cqi - #{$phase-2-end}) / 4);
+
+.mw-testimonials {
+	container-type: inline-size;
+}
+
+.mw-testimonials__title {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	margin: 2.5rem 0;
+	font-weight: 400;
+	text-align: center;
+
+	// The rules take the room left of the text.
+	&::before,
+	&::after {
+		content: "";
+		flex: 1 1 0;
+		height: 2px;
+		background: var(--wp--preset--color--primary-line);
+	}
+}
+
+.mw-testimonials__list {
+	--mw-gap: clamp(#{$gap-min}, #{$gap-calc}, #{$gap-max});
+	--mw-indent: clamp(#{$indent-min}, #{$indent-calc}, #{$indent-max});
+	--mw-pad: clamp(#{$pad-min}, #{$pad-calc}, #{$pad-max});
+
+	display: flex;
+	flex-wrap: wrap;
+	// A row with fewer cards than the others (the last of three) is centred.
+	justify-content: center;
+	align-items: stretch;
+	gap: 3.5rem 0;
+	padding: 0 0 0 var(--mw-indent);
+	margin-bottom: 5rem;
+}
+
+// No photo in any card: there is nothing to make room for above or beside them,
+// so the row is centred instead of pushed to the right, and the cards sit twice
+// as close to each other.
+.mw-testimonials__list:not(:has(.has-photos)) {
+	justify-content: center;
+	padding: 0;
+	// Nothing sticks out above the cards, so the rows get twice the space.
+	row-gap: 7rem;
+
+	.mw-testimonial {
+		margin-inline: calc(var(--mw-gap) / 2);
+	}
+}
+
+@container (max-width: #{$phase-2-end}) {
+	.mw-testimonials__list {
+		flex-direction: column;
+		align-items: center;
+		padding-left: 0;
+		--mw-pad: #{$col-pad};
+	}
+
+	.mw-testimonials__list .mw-testimonial {
+		margin-inline: $col-margin;
+	}
+
+	.mw-testimonials__list:not(:has(.has-photos)) .mw-testimonial {
+		margin-inline: 0;
+	}
+}
+
+@container (max-width: #{$center-at}) {
+	.mw-testimonials__list .mw-testimonial {
+		margin-inline: 0;
+	}
+}

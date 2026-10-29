@@ -16,7 +16,7 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 } from '@wordpress/components';
-import MediaControl from '../../utils/media-control';
+import MediaControl, { plusIcon } from '../../utils/media-control';
 import { observeLogosRow } from '../../utils/balance-logos';
 
 // Basic inline formatting only; the title stays a single line.
@@ -79,7 +79,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							multiple
 							render={ ( { open } ) => (
 								<ToolbarButton
-									icon="plus"
+									icon={ plusIcon }
 									text={ __(
 										'Add logo',
 										'moira-wong-orthodontics'

@@ -1,0 +1,42 @@
+// An empty photo slot: a grey circle with the toolbar always showing (a filled
+// slot shows it on hover only).
+.mw-testimonial__photo .mw-testimonial__empty {
+	width: 100%;
+	height: 100%;
+	background: var(--wp--preset--color--background);
+
+	.mw-media-control__toolbar {
+		opacity: 1;
+	}
+}
+
+// The caption over an empty slot is grey: white would vanish on the grey.
+.mw-testimonial__photo:has(.mw-testimonial__empty)::after {
+	color: var(--wp--preset--color--grey-medium);
+}
+
+// The picture of a loaded slot keeps the circle.
+.mw-testimonial__photo .mw-testimonial__image {
+	width: 100%;
+	height: 100%;
+}
+
+// Fields are single-line editable text; keep their look from the front end.
+.mw-testimonial .rich-text {
+	min-height: 1em;
+}
+
+// The editor's outline (hover and selection, drawn on the block's ::after) also
+// takes in the big photo, which sticks out 54px to the left of the card. Core's
+// own rules set `left: 0` with a higher specificity, hence !important.
+.mw-testimonial.has-photos::after {
+	left: -54px !important;
+}
+
+// Photos in the middle above the text (see style.scss): nothing sticks out on
+// the left any more.
+@container (max-width: 491px) {
+	.mw-testimonial.has-photos::after {
+		left: 0 !important;
+	}
+}
