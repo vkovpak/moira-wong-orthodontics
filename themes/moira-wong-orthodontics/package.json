@@ -1,0 +1,17 @@
+{
+	"name": "moira-wong-orthodontics",
+	"version": "0.1.0",
+	"description": "Block (FSE) theme for Moira Wong Orthodontics: a drag-and-drop landing page built from reusable mw/* Gutenberg blocks.",
+	"private": true,
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"start": "wp-scripts start --webpack-src-dir=src/blocks --blocks-manifest --experimental-modules",
+		"build": "wp-scripts build --webpack-src-dir=src/blocks --blocks-manifest --experimental-modules",
+		"lint:js": "wp-scripts lint-js src",
+		"lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
+		"format": "wp-scripts format src"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "latest"
+	}
+}

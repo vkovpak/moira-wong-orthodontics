@@ -1,0 +1,27 @@
+// InnerBlocks adds wrapper divs around the logo; flatten them so the logo
+// positions against .mw-header__inner exactly as on the front end.
+.mw-header__inner {
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+}
+
+// The editor wraps the logo in a ResizableBox with an inline pixel width
+// (120px by default) and max-width (1450px). Cap it at the card, as on the
+// front end, so dragging the handle cannot push the logo outside the card.
+// While no width is set, also reset it to auto so the logo shows at its
+// natural size; once a width is chosen the class goes away and it is kept.
+.mw-header__inner .mw-header__logo {
+	// The link around the image carries the padding, so the box grows with it.
+	.components-resizable-box__container {
+		max-width: 100% !important;
+		max-height: 100% !important;
+		height: auto !important;
+	}
+
+	&.is-default-size .components-resizable-box__container {
+		width: auto !important;
+		height: auto !important;
+	}
+}

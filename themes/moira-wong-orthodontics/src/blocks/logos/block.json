@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/logos",
+	"title": "Logos",
+	"category": "mw",
+	"icon": "awards",
+	"description": "A row of logos (partners, accreditations) from the media library.",
+	"keywords": [ "logos", "partners", "badges", "accreditations" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-logos__title"
+		},
+		"images": {
+			"type": "array",
+			"default": [],
+			"items": { "type": "object" }
+		},
+		"maxHeight": {
+			"type": "number",
+			"default": 60
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ],
+		"color": {
+			"background": true,
+			"text": false
+		},
+		"spacing": {
+			"margin": [ "top", "bottom" ],
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"viewScriptModule": "file:./view.js",
+	"style": "file:./style-index.css"
+}

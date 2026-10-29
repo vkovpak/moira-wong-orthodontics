@@ -1,0 +1,122 @@
+// Footer band: logo and address on the first row, treatments below. Styles for
+// the two text fields (.mw-footer-text) live here with their parent.
+.mw-footer__band {
+	padding-block: 2.2rem 1.6rem;
+	background: var(--wp--preset--color--cream);
+	font-size: 1.8rem;
+	font-weight: 600;
+}
+
+// Descendant (not child) selectors: in the editor the fields sit inside
+// InnerBlocks wrappers.
+.mw-footer__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 43.5rem);
+	align-items: start;
+	gap: 4rem 1.6rem;
+
+	.mw-footer__logo {
+		grid-column: 1;
+		justify-self: start;
+		max-width: min(100%, 400px);
+		margin: 0;
+
+		a {
+			display: block;
+		}
+
+		&.is-default-size img {
+			width: auto;
+		}
+	}
+
+	.mw-footer__address {
+		grid-column: 2;
+		margin-top: 0.8rem;
+		line-height: 1.4;
+	}
+
+	.mw-footer__treatments {
+		grid-column: 1 / -1;
+		font-size: 1.6rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+}
+
+.mw-footer-text {
+	margin: 0;
+	line-height: 1.5;
+
+	&.has-icon {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.6rem;
+	}
+
+	// The icon keeps its own proportions, at most 28px wide.
+	&__icon {
+		flex: none;
+		width: auto;
+		max-width: 28px;
+		height: auto;
+		margin-top: 0.3rem;
+
+		img {
+			display: block;
+		}
+	}
+
+	&__body {
+		min-width: 0;
+
+		// Paragraphs, headings and lists keep a small gap between each other.
+		> * {
+			margin: 0;
+		}
+
+		// Descendant (not child): the editor wraps the blocks in InnerBlocks
+		// divs, and theme.json sets its own line height on paragraphs.
+		:is(p, li, h1, h2, h3, h4, h5, h6) {
+			line-height: inherit;
+		}
+
+		> * + * {
+			margin-top: 0.8em;
+		}
+
+		ul,
+		ol {
+			padding-left: 1.4em;
+		}
+
+		a {
+			text-decoration: underline;
+		}
+
+		// A span wraps a phrase that must move to the next line as a whole.
+		span {
+			display: inline-block;
+		}
+	}
+}
+
+@media (max-width: 830px) {
+	.mw-footer__layout {
+		grid-template-columns: 1fr;
+
+		.mw-footer__logo,
+		.mw-footer__address,
+		.mw-footer__treatments {
+			grid-column: 1;
+		}
+
+		// Single column: treatments line up with the address text, which sits
+		// after the 26px icon and its 6px gap.
+		.mw-footer__treatments {
+			padding-left: 3.2rem;
+			font-size: var(--wp--preset--font-size--small);
+			line-height: 1.8;
+		}
+	}
+}

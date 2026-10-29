@@ -1,0 +1,140 @@
+// Row of logos: a common height cap, each logo keeps its own proportions and
+// is never scaled above its original size. The wrapping is plain flexbox;
+// src/utils/balance-logos.js measures the real logo widths and sets
+// data-layout="spread" (everything fits on one line, edge logos flush with the
+// edges), "rows" (up to three rows at full width: rows of four or more stay
+// spread, shorter ones are centred) or "balanced" (more rows: narrowed to fit,
+// each row centred).
+
+// The section (.mw-section) is full width and its .mw-content column is
+// centred, so neither the title nor the row sets a max-width of its own.
+.mw-logos {
+	// Optional heading line with a thin yellow rule under it. The doubled class
+	// outranks the global paragraph line height from theme.json.
+	& &__title {
+		margin: 0;
+		padding-block: 20px 12px;
+		border-bottom: 1px solid var(--wp--preset--color--primary);
+		font-size: 2.3rem;
+		font-weight: 600;
+		line-height: 1.2;
+		text-align: center;
+	}
+
+	&__row {
+		// --mw-logos-height is the pre-maxHeight name still found in saved
+		// content that has not been re-saved yet.
+		--mw-logos-cap: var(--mw-logos-max-height, var(--mw-logos-height, 60px));
+		// Minimum distance between logos; space-between only adds on top.
+		--mw-logos-gap: clamp(24px, 5vw, 40px);
+		--mw-logos-row-gap: 20px;
+
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		// Without the script rows are centred; on wide screens they start
+		// spread, which is what the script confirms when everything fits.
+		justify-content: center;
+		gap: var(--mw-logos-row-gap) var(--mw-logos-gap);
+		padding-block: 24px;
+
+		@media (min-width: 1200px) {
+			justify-content: space-between;
+		}
+
+		&[data-layout="spread"] {
+			justify-content: space-between;
+		}
+
+		&[data-layout="balanced"] {
+			justify-content: center;
+		}
+
+		// Up to three rows at full width: the script marks each logo with its
+		// row, empty full-width lines force the breaks, rows of four or more
+		// stay spread and rows of up to three are centred by auto margins on
+		// their first and last logo. The row gap is off here: each break line
+		// is as tall as one row gap instead, so only the rows' own space is
+		// taken and nothing sticks out of the container.
+		&[data-layout="rows"] {
+			justify-content: space-between;
+			row-gap: 0;
+
+			&::before,
+			&::after {
+				content: "";
+				flex: 0 0 100%;
+				height: var(--mw-logos-row-gap);
+			}
+
+			// No third row: the second break line is not needed.
+			&:not(:has(> [data-row="3"]))::after {
+				display: none;
+			}
+
+			&::before {
+				order: 2;
+			}
+
+			&::after {
+				order: 4;
+			}
+
+			> [data-row="1"] {
+				order: 1;
+			}
+
+			> [data-row="2"] {
+				order: 3;
+			}
+
+			> [data-row="3"] {
+				order: 5;
+			}
+
+			> [data-centre-start] {
+				margin-inline-start: auto;
+			}
+
+			> [data-centre-end] {
+				margin-inline-end: auto;
+			}
+		}
+
+		// Two or three logos: centred with a fixed gap instead of spread apart.
+		&:not(:has(> :nth-child(4))) {
+			justify-content: center;
+			column-gap: clamp(32px, 8vw, 80px);
+		}
+	}
+
+	// Front end: <img> straight in the row; editor: inside .mw-logos__item.
+	&__row > img,
+	&__item img {
+		width: auto;
+		max-width: 100%;
+		height: auto;
+		max-height: var(--mw-logos-cap);
+		object-fit: contain;
+	}
+
+	&__item {
+		flex: 0 1 auto;
+		max-width: 100%;
+	}
+}
+
+// Tablet and phone: the logo height steps down so rows of two still fit.
+@media (max-width: 781px) {
+	.mw-logos__row > img,
+	.mw-logos__item img {
+		max-height: calc(var(--mw-logos-cap) * 0.75);
+	}
+}
+
+@media (max-width: 480px) {
+	.mw-logos__row > img,
+	.mw-logos__item img {
+		max-height: calc(var(--mw-logos-cap) * 0.6);
+	}
+}

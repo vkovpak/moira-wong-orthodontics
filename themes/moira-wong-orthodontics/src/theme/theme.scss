@@ -1,0 +1,99 @@
+// Theme-wide styles: layout, footer, utilities.
+// Section styles live next to their blocks in src/blocks.
+
+// --mw-adminbar: height WordPress reserves for the admin bar (html margin-top).
+// --mw-sticky-top: where the sticky header docks; below 600px the admin bar
+// is not fixed and scrolls away, so the header docks at the very top.
+:root {
+	--mw-adminbar: 0px;
+	--mw-sticky-top: 0px;
+}
+
+body.admin-bar {
+	--mw-adminbar: 32px;
+	--mw-sticky-top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar {
+		--mw-adminbar: 46px;
+		--mw-sticky-top: 46px;
+	}
+}
+
+@media (max-width: 600px) {
+	body.admin-bar {
+		--mw-sticky-top: 0px;
+	}
+}
+
+// Side gutter steps down on narrower screens. `html body` outranks the
+// `body` rule that theme.json prints for the same variable.
+@media (max-width: 1024px) {
+	html body {
+		--wp--custom--gutter: 2.5rem;
+	}
+}
+
+@media (max-width: 900px) {
+	html body {
+		--wp--custom--gutter: 2rem;
+	}
+}
+
+@media (max-width: 380px) {
+	html body {
+		--wp--custom--gutter: 1.5rem;
+	}
+}
+
+// 1rem = 10px, so rem values read as px / 10 (1.6rem = 16px).
+html {
+	font-size: 62.5%;
+	scroll-padding-top: calc(var(--mw-sticky-top) + 60px);
+}
+
+// Section pattern for custom blocks: a full-width <section class="mw-section">
+// (its own background and vertical padding, plus the side gutter) holding a
+// centred .mw-content column that is never wider than the content width.
+.mw-section {
+	padding-inline: var(--wp--custom--gutter);
+}
+
+.mw-content {
+	max-width: var(--wp--style--global--content-size, 1200px);
+	margin-inline: auto;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	transition: color 0.2s ease;
+}
+
+// Footer stays at the bottom of the viewport when the content is short.
+.wp-site-blocks {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - var(--mw-adminbar));
+
+	// Header, page sections and footer sit flush against each other.
+	> * {
+		margin-block: 0;
+	}
+
+	> main {
+		flex: 1 0 auto;
+	}
+
+	// The template part wrapper is the sticky element: it must be a direct
+	// child of this tall container for sticky to have room to travel.
+	> header {
+		position: sticky;
+		top: var(--mw-sticky-top);
+		z-index: 10;
+	}
+}

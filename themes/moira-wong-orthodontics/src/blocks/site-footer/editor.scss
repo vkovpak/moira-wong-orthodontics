@@ -1,0 +1,42 @@
+// InnerBlocks wraps the footer's children in divs; flatten them so the children
+// are grid items of the layout exactly as on the front end.
+.mw-footer__layout {
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+}
+
+// The address icon slot before an icon is chosen.
+.mw-footer-text__icon-add.components-button {
+	flex: none;
+	width: 28px;
+	height: 28px;
+	min-width: 28px;
+	padding: 0;
+	border: 1px dashed currentcolor;
+	justify-content: center;
+}
+
+// Same for the content of a text field, so its paragraphs and lists are direct
+// children of the body and get the same spacing as on the front end. The editor
+// gives every block a top margin of its own; the first one gets none.
+.mw-footer-text__body {
+	> .block-editor-inner-blocks > .block-editor-block-list__layout > :first-child {
+		margin-top: 0;
+	}
+
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+}
+
+// The resize box of the Site Logo is capped like the front end while the handle
+// is dragged: 400px wide and, via --mw-logo-max-height, the matching height for
+// the logo's aspect ratio; edit.js snaps the saved size to the limit on
+// release.
+.mw-footer__logo .components-resizable-box__container {
+	max-width: min(100%, 400px) !important;
+	max-height: var(--mw-logo-max-height) !important;
+}

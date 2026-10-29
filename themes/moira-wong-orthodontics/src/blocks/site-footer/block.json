@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/site-footer",
+	"title": "Site Footer",
+	"category": "mw",
+	"description": "Site-wide footer band: fixed logo plus two rich text fields (address with an icon, and treatments).",
+	"keywords": [ "footer", "address", "treatments" ],
+	"textdomain": "moira-wong-orthodontics",
+	"supports": {
+		"html": false,
+		"align": [ "full" ],
+		"multiple": false,
+		"inserter": false,
+		"reusable": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

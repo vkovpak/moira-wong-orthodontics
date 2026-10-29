@@ -1,0 +1,84 @@
+// Editor-canvas-only styling; never loaded on the front end.
+
+// Image with a hover/focus toolbar (move, replace, remove): see
+// src/utils/media-control.js. tabIndex/role="group" on the wrapper means
+// :focus-within also covers keyboard tabbing, not just mouse hover.
+.mw-media-control {
+	position: relative;
+
+	img {
+		display: block;
+	}
+
+	.mw-media-control__toolbar {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 2;
+		display: flex;
+		gap: 4px;
+		padding: 4px;
+		transform: translate(-50%, -50%);
+		background: rgba(0, 0, 0, 0.6);
+		border-radius: 4px;
+		opacity: 0;
+		transition: opacity 0.1s ease-out;
+
+		.components-button {
+			color: var(--wp--preset--color--base);
+
+			&:hover {
+				color: var(--wp--preset--color--primary);
+			}
+
+			// Keep core's focus ring for keyboard focus only.
+			&:focus:not(:focus-visible) {
+				box-shadow: none;
+			}
+
+			// Edge arrows hide visually but stay focusable, so focus is not lost
+			// when they get disabled at the ends of the list.
+			&[aria-disabled="true"] {
+				position: absolute;
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			// Core's own is-destructive rules outgun these on specificity,
+			// so cancelling their :hover/:active effects needs !important.
+			&.is-destructive {
+				&:hover {
+					color: var(--wp-components-color-accent) !important;
+					filter: brightness(1.1);
+				}
+
+				&:active {
+					background: transparent !important;
+				}
+			}
+		}
+	}
+
+	&:hover .mw-media-control__toolbar,
+	&:focus-within .mw-media-control__toolbar {
+		opacity: 1;
+	}
+
+	// Upload in progress (blob: preview, no attachment id yet): dim the
+	// preview and show a spinner instead of the toolbar.
+	&.is-uploading img {
+		opacity: 0.4;
+	}
+
+	.mw-media-control__spinner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		.components-spinner {
+			width: 32px;
+			height: 32px;
+		}
+	}
+}

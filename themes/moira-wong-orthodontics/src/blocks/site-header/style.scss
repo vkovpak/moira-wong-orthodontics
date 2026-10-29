@@ -1,0 +1,184 @@
+// White top bar with the logo card hanging over the first section.
+
+.mw-header {
+	position: relative;
+	padding: 0 var(--wp--custom--gutter);
+	background: var(--wp--preset--color--base);
+
+	// drop-shadow follows the combined outline of the bar and the logo card
+	// hanging below it, so one shadow runs along both.
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+
+	&__inner {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 0 1.6rem;
+		max-width: var(--wp--style--global--content-size, 1200px);
+		height: 46px;
+		margin-inline: auto;
+		text-transform: uppercase;
+		font-size: var(--wp--preset--font-size--large);
+	}
+
+	&__address,
+	&__phone {
+		margin: 0;
+		line-height: 1.2;
+
+		a {
+			text-decoration: none;
+		}
+	}
+
+	// Handset icon of a phone link (added in header-text/render.php), shown
+	// only on narrow screens.
+	&__tel-icon {
+		display: none;
+		width: 16px;
+		height: 16px;
+	}
+
+	// The yellow separator is a flex item of its own (::after, ordered between
+	// the address and the phone), so align-items: center places it; it is the
+	// height of the capitals and only shown when both fields are there.
+	&__address {
+		order: 1;
+	}
+
+	&__phone {
+		order: 3;
+	}
+
+	&__inner::after {
+		content: "";
+		order: 2;
+		display: none;
+		width: 2px;
+		height: 0.65em;
+		background: var(--wp--preset--color--primary);
+	}
+
+	&__inner:has(.mw-header__address):has(.mw-header__phone)::after {
+		display: block;
+	}
+
+	// Descendant selector (not child): in the editor the logo sits inside
+	// InnerBlocks wrappers. Specificity also beats the editor's own
+	// .block-editor-block-list__block { position: relative }.
+	&__inner .mw-header__logo {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		// 30vw between 160px and 338px: the full card from 1125px up.
+		width: clamp(160px, 30vw, 338px);
+		max-width: 100%;
+		margin: 0;
+		background: var(--wp--preset--color--base);
+		border-radius: 0 0 4px 4px;
+
+		// The padding lives on the link and scales with the card's width.
+		a {
+			display: flex;
+			justify-content: center;
+			box-sizing: border-box;
+			max-width: 100%;
+			padding: 6%;
+		}
+
+		// Without a chosen width core pins the image to 120px; show it at its
+		// natural size instead. A width set in the editor is left alone.
+		&.is-default-size .custom-logo-link img {
+			width: auto;
+		}
+	}
+}
+
+@media (min-width: 701px) {
+	html.mw-scrolled .mw-header__inner .mw-header__logo {
+		width: 160px;
+
+		a {
+			padding: 4%;
+		}
+	}
+}
+
+// Animated only for the scroll flip itself (html.mw-header-transitioning is set
+// for that moment): the widths are vw-based, so an always-on transition would
+// also animate every window resize.
+html.mw-header-transitioning .mw-header__inner .mw-header__logo {
+	transition: width 0.5s ease-in-out;
+
+	a {
+		transition: padding 0.5s ease-in-out;
+	}
+}
+
+@media (max-width: 781px) {
+	.mw-header {
+		&__address {
+			display: none;
+		}
+
+		// The address is hidden here, so the separator goes too.
+		&__inner:has(.mw-header__address):has(.mw-header__phone)::after {
+			display: none;
+		}
+	}
+}
+
+// Phones: a compact logo card (above 700px it is only compact once the page
+// is scrolled, see html.mw-scrolled above), and the phone link's handset icon
+// replaces its text. The text is only hidden visually, so the link keeps its
+// accessible name.
+@media (max-width: 700px) {
+	.mw-header__inner .mw-header__logo {
+		width: 150px;
+
+		a {
+			padding: 4% 0;
+		}
+	}
+
+	.mw-header {
+		// The icon sits in a thin yellow ring; the ::after widens the tap area
+		// to 44px without changing the look.
+		&__phone a {
+			position: relative;
+			display: inline-block;
+			margin: 4px -2px 0 0;
+			padding: 7px;
+			border: 1px solid var(--wp--preset--color--primary);
+			border-radius: 50%;
+
+			&:not(:hover) {
+				color: rgba(37, 47, 55, 0.8);
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: -7px;
+			}
+		}
+
+		&__tel-text {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+		}
+
+		&__tel-icon {
+			display: block;
+		}
+	}
+}

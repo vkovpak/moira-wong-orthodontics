@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/site-header",
+	"title": "Site Header",
+	"category": "mw",
+	"description": "Site-wide header bar: fixed logo plus single-line address and contact text fields.",
+	"keywords": [ "header", "logo", "phone", "address" ],
+	"textdomain": "moira-wong-orthodontics",
+	"supports": {
+		"html": false,
+		"align": [ "full" ],
+		"multiple": false,
+		"inserter": false,
+		"reusable": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
