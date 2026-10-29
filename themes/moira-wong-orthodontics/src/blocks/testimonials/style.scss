@@ -46,6 +46,7 @@ $pad-calc: calc(#{$pad-min} + (100cqi - #{$phase-2-end}) / 4);
 
 .mw-testimonials {
 	container-type: inline-size;
+	margin-bottom: 7rem !important;
 }
 
 .mw-testimonials__title {
@@ -78,7 +79,6 @@ $pad-calc: calc(#{$pad-min} + (100cqi - #{$phase-2-end}) / 4);
 	align-items: stretch;
 	gap: 3.5rem 0;
 	padding: 0 0 0 var(--mw-indent);
-	margin-bottom: 5rem;
 }
 
 // No photo in any card: there is nothing to make room for above or beside them,

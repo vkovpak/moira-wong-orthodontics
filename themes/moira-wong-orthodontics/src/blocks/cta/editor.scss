@@ -1,0 +1,8 @@
+// Inner blocks add wrappers; the rules need the buttons row to stay the flex
+// container, as on the front end.
+.mw-cta .wp-block-buttons {
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+}

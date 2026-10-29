@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/cta",
+	"title": "CTA",
+	"category": "mw",
+	"icon": "megaphone",
+	"description": "A call-to-action button centred between two thin rules.",
+	"keywords": [ "cta", "button", "call to action" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

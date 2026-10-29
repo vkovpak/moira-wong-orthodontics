@@ -1,0 +1,27 @@
+// A button between two thin rules that run out to the edges of the content.
+// The longer selector beats the core layout rules that zero a block's margin.
+body .mw-cta.mw-section {
+	margin-block: 3.5rem;
+
+	.wp-block-buttons {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: center;
+		gap: 2rem;
+
+		&::before,
+		&::after {
+			content: "";
+			flex: 1 1 0;
+			min-width: 0;
+			height: 1px;
+			background: var(--wp--preset--color--primary-line);
+		}
+
+		.wp-block-button {
+			flex: none;
+			max-width: 80%;
+		}
+	}
+}
