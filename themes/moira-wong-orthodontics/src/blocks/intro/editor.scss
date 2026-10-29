@@ -1,0 +1,7 @@
+// Before a picture is chosen the placeholder fills the photo slot and has a
+// photo-like height.
+.mw-intro__photo .mw-intro__placeholder {
+	width: 100%;
+	min-height: 41.6rem;
+	border-radius: 5px;
+}

@@ -4,7 +4,7 @@ import {
 	InnerBlocks,
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
-import MediaControl from '../../utils/media-control';
+import MediaControl, { imageIcon } from '../../utils/media-control';
 
 // Heading, text and button are the usual core blocks, so they keep their own
 // toolbars; the theme styles them inside .mw-hero__text.
@@ -75,8 +75,8 @@ export default function Edit( { attributes, setAttributes } ) {
 						/>
 					) : (
 						<MediaPlaceholder
-							className="mw-hero__placeholder"
-							icon="format-image"
+							className="mw-photo-placeholder mw-hero__placeholder"
+							icon={ imageIcon }
 							labels={ {
 								title: __( 'Photo', 'moira-wong-orthodontics' ),
 							} }

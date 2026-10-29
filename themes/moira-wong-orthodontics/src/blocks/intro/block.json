@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/intro",
+	"title": "Intro",
+	"category": "mw",
+	"icon": "align-pull-left",
+	"description": "A photo next to a heading, text and button; the photo goes above the text on narrow screens.",
+	"keywords": [ "intro", "about", "photo", "text" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"mediaId": {
+			"type": "number"
+		},
+		"mediaUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-intro__photo img",
+			"attribute": "src",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-intro__photo img",
+			"attribute": "alt",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ],
+		"color": {
+			"background": true,
+			"text": false
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

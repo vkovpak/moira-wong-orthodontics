@@ -1,5 +1,19 @@
-// The placeholder fills the round ring before a photo is chosen.
-.mw-hero__photo .mw-hero__placeholder {
+// The empty photo slot has the shape of a loaded photo: the round frame cut
+// flat where the picture would start, with a flat, half-transparent grey line
+// along the cut. The form is centred in what is left.
+.mw-hero__photo .components-placeholder.mw-hero__placeholder {
+	--mw-hero-cut: calc(90px - 0.8rem - 1px);
+	--mw-grey: var(--wp--preset--color--grey-light);
+	--mw-line: color-mix(in srgb, var(--mw-grey) 50%, transparent);
+
+	box-sizing: border-box;
 	aspect-ratio: 1;
+	padding-top: var(--mw-hero-cut);
 	border-radius: 50%;
+	clip-path: inset(var(--mw-hero-cut) 0 0);
+	background-color: var(--wp--preset--color--background);
+	background-image: linear-gradient(var(--mw-line), var(--mw-line));
+	background-position: 0 var(--mw-hero-cut);
+	background-size: 100% 1px;
+	background-repeat: no-repeat;
 }

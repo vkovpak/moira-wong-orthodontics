@@ -13,14 +13,17 @@
 			"palette": [
 				{ "slug": "base", "name": "White", "color": "#ffffff" },
 				{ "slug": "contrast", "name": "Slate", "color": "#252f37" },
-				{ "slug": "primary", "name": "Yellow", "color": "#edba3d" },
+				{ "slug": "primary", "name": "Yellow", "color": "#e8ce2c" },
+				{ "slug": "amber", "name": "Amber", "color": "#edba3d" },
 				{ "slug": "primary-dark", "name": "Yellow Dark", "color": "#dfc318" },
 				{ "slug": "primary-light", "name": "Yellow Light", "color": "#f0da46" },
 				{ "slug": "link-hover", "name": "Link Hover Brown", "color": "#8a4516" },
 				{ "slug": "accent", "name": "Pale Yellow", "color": "#f9f1be" },
 				{ "slug": "cream", "name": "Cream", "color": "#fdf9e6" },
 				{ "slug": "cream-light", "name": "Cream Light", "color": "#fdfbed" },
-				{ "slug": "background", "name": "Light Grey", "color": "#f7f7f7" }
+				{ "slug": "background", "name": "Off White", "color": "#f7f7f7" },
+				{ "slug": "grey-light", "name": "Light Grey", "color": "#cdcdcd" },
+				{ "slug": "grey-medium", "name": "Medium Grey", "color": "#878786" }
 			],
 			"gradients": [
 				{
@@ -97,7 +100,7 @@
 		},
 		"typography": {
 			"fontFamily": "var(--wp--preset--font-family--assistant)",
-			"fontSize": "var(--wp--preset--font-size--medium)",
+			"fontSize": "1.8rem",
 			"fontWeight": "400",
 			"lineHeight": "1.5"
 		},
@@ -116,7 +119,7 @@
 				}
 			},
 			"h1": { "typography": { "fontSize": "var(--wp--preset--font-size--huge)" } },
-			"h2": { "typography": { "fontSize": "var(--wp--preset--font-size--xx-large)" } },
+			"h2": { "typography": { "fontSize": "clamp(2.4rem, 5.5vw, 3.2rem)" } },
 			"h3": { "typography": { "fontSize": "var(--wp--preset--font-size--x-large)" } },
 			"link": {
 				"color": { "text": "currentColor" },

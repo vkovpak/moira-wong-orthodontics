@@ -1,0 +1,100 @@
+// Photo zone, a fixed gap and text zone on one row, with room kept on the
+// right of the text. At the full 1200px content width that is 465px + 55px +
+// 525px + 155px. When the screen narrows, the room on the right shrinks first
+// (down to nothing at 1045px, the width of the row itself); only after that do
+// the zones shrink, proportionally (fr), with the gap staying 55px. The
+// picture is shown at its own size, at most as wide as its zone, so a big file
+// fills the zone and a small one is never stretched.
+// Below $stack the photo zone would be narrower than the picture itself: the
+// photo goes above the text and both are centred.
+$photo-zone: 465fr;
+$text-zone: 525fr;
+$gap: 55px;
+$room-right: 155px;
+$row: 1045px; // 465 + 55 + 525
+$text: 54rem;
+$stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
+
+// The section (not the layout inside it) is the container, so the layout itself
+// can change when the container gets narrow.
+.mw-intro {
+	container-type: inline-size;
+}
+
+.mw-intro__layout {
+	display: grid;
+	box-sizing: border-box;
+	grid-template-columns: $photo-zone $text-zone;
+	column-gap: $gap;
+	// The taller of the two sets the row height; the shorter text is centred
+	// next to the photo, a shorter photo stays at the top.
+	align-items: start;
+	padding-right: clamp(0px, calc(100cqi - #{$row}), #{$room-right});
+}
+
+.mw-intro__photo {
+	align-self: start;
+	min-width: 0;
+	margin-block: 2.5rem 3rem;
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin-inline: auto;
+		border-radius: 5px;
+	}
+}
+
+// Descendant selectors throughout: in the editor the blocks sit inside
+// InnerBlocks wrappers, and they outrank theme.json's element styles.
+.mw-intro__text {
+	align-self: center;
+	margin-block: 1.6rem 5rem;
+
+	h2 {
+		margin: 0;
+		font-weight: 400;
+		line-height: 1.2;
+	}
+
+	p {
+		margin: 2rem 0 0;
+		line-height: 1.2;
+	}
+
+	.wp-block-buttons {
+		margin-top: 3rem;
+	}
+}
+
+@container (max-width: #{$stack}) {
+	.mw-intro__layout {
+		grid-template-columns: minmax(0, 1fr);
+		padding-right: 0;
+	}
+
+	.mw-intro__photo {
+		margin-block: 1.5rem 2rem;
+	}
+
+	.mw-intro__text {
+		max-width: $text;
+		margin: 0 auto 5rem;
+		text-align: center;
+
+		p {
+			margin-inline: auto;
+		}
+
+		.wp-block-buttons {
+			justify-content: center;
+		}
+	}
+}
+
+@media (max-width: 700px) {
+	.mw-intro__text {
+		margin: 0 auto 4.2rem;
+	}
+}

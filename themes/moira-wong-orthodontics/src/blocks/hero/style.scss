@@ -59,7 +59,11 @@ $text: 60rem;
 	border-radius: 50%;
 }
 
+// --mw-hero-cut: how far down inside the round frame the picture starts (the
+// part of the ring hidden under the header, minus the ring's own 9px).
 .mw-hero__image {
+	--mw-hero-cut: calc(90px - 0.8rem - 1px);
+
 	aspect-ratio: 1;
 	overflow: hidden;
 	border-radius: 50%;
@@ -68,7 +72,7 @@ $text: 60rem;
 		display: block;
 		width: 100%;
 		height: auto;
-		margin-top: calc(90px - 0.8rem - 1px);
+		margin-top: var(--mw-hero-cut);
 	}
 }
 
@@ -81,11 +85,17 @@ $text: 60rem;
 	}
 
 	.mw-hero__text {
-		margin: 2rem auto 4.2rem;
+		margin: 2rem auto 5rem;
 		text-align: center;
 
 		.wp-block-buttons {
 			justify-content: center;
 		}
+	}
+}
+
+@media (max-width: 700px) {
+	.mw-hero__text {
+		margin: 2rem auto 4.2rem;
 	}
 }

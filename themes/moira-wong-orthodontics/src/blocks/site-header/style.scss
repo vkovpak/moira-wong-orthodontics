@@ -57,7 +57,7 @@
 		display: none;
 		width: 2px;
 		height: 0.65em;
-		background: var(--wp--preset--color--primary);
+		background: var(--wp--preset--color--amber);
 	}
 
 	&__inner:has(.mw-header__address):has(.mw-header__phone)::after {
@@ -156,7 +156,7 @@ html.mw-header-transitioning .mw-header__inner .mw-header__logo {
 			display: inline-block;
 			margin: 4px -2px 0 0;
 			padding: 7px;
-			border: 1px solid var(--wp--preset--color--primary);
+			border: 1px solid var(--wp--preset--color--amber);
 			border-radius: 50%;
 
 			&:not(:hover) {

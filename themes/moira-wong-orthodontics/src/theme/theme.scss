@@ -82,6 +82,26 @@ a {
 	transition: color 0.1s ease-out, background-color 0.1s ease-out;
 }
 
+// Smaller button text on phones. The doubled class outranks the font size that
+// theme.json prints for the button element.
+@media (max-width: 600px) {
+	.wp-element-button.wp-element-button {
+		font-size: 1.5rem;
+	}
+}
+
+@media (max-width: 500px) {
+	.wp-element-button.wp-element-button {
+		font-size: 1.4rem;
+	}
+}
+
+// Yellow (default) button: dark with white text on hover, like the dark one.
+.wp-block-button:not([class*="is-style-"]) .wp-block-button__link:hover {
+	background-color: var(--wp--preset--color--contrast);
+	color: var(--wp--preset--color--base);
+}
+
 // Dark button: white with dark text on hover. Written here because WordPress
 // does not output :hover for block style variations from styles/*.json.
 .wp-block-button.is-style-button-dark .wp-block-button__link:hover {
