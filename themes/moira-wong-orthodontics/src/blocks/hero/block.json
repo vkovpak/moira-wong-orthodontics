@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/hero",
+	"title": "Hero",
+	"category": "mw",
+	"icon": "cover-image",
+	"description": "Opening section: heading, text and button on the left, a round photo on the right.",
+	"keywords": [ "hero", "banner", "intro" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"mediaId": {
+			"type": "number"
+		},
+		"mediaUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-hero__photo img",
+			"attribute": "src",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-hero__photo img",
+			"attribute": "alt",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

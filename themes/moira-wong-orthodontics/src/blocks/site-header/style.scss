@@ -133,10 +133,8 @@ html.mw-header-transitioning .mw-header__inner .mw-header__logo {
 	}
 }
 
-// Phones: a compact logo card (above 700px it is only compact once the page
-// is scrolled, see html.mw-scrolled above), and the phone link's handset icon
-// replaces its text. The text is only hidden visually, so the link keeps its
-// accessible name.
+// Compact logo card on tablets and phones (above 700px it is only compact once
+// the page is scrolled, see html.mw-scrolled above).
 @media (max-width: 700px) {
 	.mw-header__inner .mw-header__logo {
 		width: 150px;
@@ -145,7 +143,11 @@ html.mw-header-transitioning .mw-header__inner .mw-header__logo {
 			padding: 4% 0;
 		}
 	}
+}
 
+// Phones: the phone link's handset icon replaces its text. The text is only
+// hidden visually, so the link keeps its accessible name.
+@media (max-width: 480px) {
 	.mw-header {
 		// The icon sits in a thin yellow ring; the ::after widens the tap area
 		// to 44px without changing the look.

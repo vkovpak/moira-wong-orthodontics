@@ -71,7 +71,22 @@ img {
 }
 
 a {
-	transition: color 0.2s ease;
+	transition: color 0.1s ease-out;
+}
+
+.wp-element-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 5.9rem;
+	transition: color 0.1s ease-out, background-color 0.1s ease-out;
+}
+
+// Dark button: white with dark text on hover. Written here because WordPress
+// does not output :hover for block style variations from styles/*.json.
+.wp-block-button.is-style-button-dark .wp-block-button__link:hover {
+	background-color: var(--wp--preset--color--base);
+	color: var(--wp--preset--color--contrast);
 }
 
 // Footer stays at the bottom of the viewport when the content is short.

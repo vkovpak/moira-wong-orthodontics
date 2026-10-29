@@ -1,0 +1,91 @@
+// Opening section: text column on the left, round photo on the right. The photo
+// ring (1px white line, 8px gap, 540px photo) is pulled up under the sticky
+// header by 90px; the picture itself starts at the visible edge, so it is
+// pushed down inside the round frame by the 90px minus the ring's own 9px.
+// Flex with wrap-reverse: when the text and the photo no longer fit side by
+// side, the text wraps to a second line *below* the photo. The text width and
+// the photo width below are the only two numbers that decide where that
+// happens; the container query at the end is derived from them.
+$ring: 55.8rem;
+$text: 60rem;
+
+.mw-hero {
+	// Dark yellow bottom-left to light yellow top-right; the colours are solid
+	// outside the middle 54% of the section.
+	background: linear-gradient(56deg, #dfc318 23%, #f0da46 77%);
+}
+
+.mw-hero__layout {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	// Reversed cross axis: flex-end is the top of a line.
+	align-items: flex-end;
+	container-type: inline-size;
+}
+
+// Descendant selectors throughout: in the editor the blocks sit inside
+// InnerBlocks wrappers, and they outrank theme.json's element styles.
+.mw-hero__text {
+	margin-block: 10.5rem 4rem;
+	max-width: $text;
+
+	h1 {
+		margin-block: 0 6px;
+		font-size: clamp(3rem, 6.5vw, 4.2rem);
+		font-weight: 400;
+		line-height: 1.2;
+	}
+
+	p {
+		margin: 0.4rem 0 0;
+		font-size: clamp(1.8rem, 3vw, 2.2rem);
+		font-weight: 600;
+		line-height: 1.36;
+	}
+
+	.wp-block-buttons {
+		margin-top: 3rem;
+	}
+}
+
+.mw-hero__photo {
+	flex: none;
+	box-sizing: border-box;
+	width: $ring;
+	max-width: 100%;
+	margin: -90px 0 0.7rem auto;
+	padding: 0.8rem;
+	border: 1px solid var(--wp--preset--color--base);
+	border-radius: 50%;
+}
+
+.mw-hero__image {
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: 50%;
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin-top: calc(90px - 0.8rem - 1px);
+	}
+}
+
+// Text and photo no longer fit side by side ($text + $ring): the photo is
+// centred above the text, which is centred too and gets room below.
+@container (max-width: #{$text + $ring - 0.01rem}) {
+	.mw-hero__photo {
+		margin-inline: auto;
+		margin-bottom: 0;
+	}
+
+	.mw-hero__text {
+		margin: 2rem auto 4.2rem;
+		text-align: center;
+
+		.wp-block-buttons {
+			justify-content: center;
+		}
+	}
+}
