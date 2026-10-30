@@ -176,6 +176,51 @@ $right-share: math.div($pad-right, $text-area);
 	}
 }
 
+// Photo on the left: the columns swap and the bubble sticks out to the right.
+// The heading, the paragraphs and the review share one left edge, 55px further
+// right than the column's padding so that they clear the bubble, and one right
+// edge, 80px short of the column's: the most the 539px heading can lose and
+// still fit on one line.
+$clear-bubble: 55px;
+$room-photo-left: 80px;
+
+.mw-about.photo-left {
+	.mw-about__layout {
+		grid-template-columns: $zone minmax(0, 1fr);
+	}
+
+	.mw-about__photo {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.mw-about__text {
+		grid-column: 2;
+		grid-row: 1;
+		--mw-right-room: #{$room-photo-left};
+
+		h2 {
+			margin-inline: $clear-bubble $room-photo-left;
+		}
+
+		p {
+			margin-left: $clear-bubble;
+		}
+	}
+
+	// The review's own indent is on its right, away from the bubble.
+	.mw-about__review {
+		margin-left: $clear-bubble;
+		padding-right: 10.3%;
+		padding-left: 0;
+	}
+
+	.mw-about__bubble {
+		right: -$bubble-left;
+		left: auto;
+	}
+}
+
 @container (max-width: #{$stack}) {
 	.mw-about__layout {
 		grid-template-columns: minmax(0, 1fr);
@@ -195,6 +240,41 @@ $right-share: math.div($pad-right, $text-area);
 
 	.mw-about__review {
 		padding-left: 0;
+	}
+
+	// The swapped layout goes back to one column, the bubble on the left.
+	.mw-about.photo-left {
+		.mw-about__layout {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.mw-about__photo,
+		.mw-about__text {
+			grid-column: auto;
+			grid-row: auto;
+		}
+
+		.mw-about__text {
+			--mw-right-room: 0px;
+		}
+
+		.mw-about__text h2 {
+			margin-inline: 0;
+		}
+
+		.mw-about__text p,
+		.mw-about__review {
+			margin-left: 0;
+		}
+
+		.mw-about__review {
+			padding-right: 0;
+		}
+
+		.mw-about__bubble {
+			right: auto;
+			left: -$bubble-left;
+		}
 	}
 
 	// --mw-zoom is 1 while the pair fits, then falls with the container width.

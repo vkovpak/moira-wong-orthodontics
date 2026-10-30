@@ -1,7 +1,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { mediaId, mediaUrl, mediaAlt } = attributes;
+	const { hasPhoto, mediaId, mediaUrl, mediaAlt } = attributes;
 	const blockProps = useBlockProps.save( {
 		className: 'mw-hero mw-section',
 	} );
@@ -12,7 +12,7 @@ export default function save( { attributes } ) {
 				<div className="mw-hero__text">
 					<InnerBlocks.Content />
 				</div>
-				{ mediaUrl && (
+				{ hasPhoto && mediaUrl && (
 					<div className="mw-hero__photo">
 						<div className="mw-hero__image">
 							<img

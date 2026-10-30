@@ -7,15 +7,22 @@
 	}
 }
 
-// The address icon slot before an icon is chosen.
+// The address icon slot before an icon is chosen: the dark picture button of
+// the other image slots' toolbars.
 .mw-footer-text__icon-add.components-button {
 	flex: none;
 	width: 28px;
 	height: 28px;
 	min-width: 28px;
-	padding: 0;
-	border: 1px dashed currentcolor;
+	padding: 4px;
 	justify-content: center;
+	background: rgba(0, 0, 0, 0.6);
+	border-radius: 4px;
+	color: var(--wp--preset--color--base);
+
+	&:hover {
+		color: var(--wp--preset--color--primary);
+	}
 }
 
 // Same for the content of a text field, so its paragraphs and lists are direct

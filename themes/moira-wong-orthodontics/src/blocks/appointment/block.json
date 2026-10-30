@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/appointment",
+	"title": "Appointment",
+	"category": "mw",
+	"icon": "calendar-alt",
+	"description": "A round photo on the left; heading, text, a highlighted box and a footnote on the right.",
+	"keywords": [ "appointment", "consultation", "assessment" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"hasPhoto": {
+			"type": "boolean",
+			"default": true
+		},
+		"photoPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"mediaId": {
+			"type": "number"
+		},
+		"mediaUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-appt__image img",
+			"attribute": "src",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-appt__image img",
+			"attribute": "alt",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-appt__title"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

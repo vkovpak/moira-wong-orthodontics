@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/appointment-box",
+	"title": "Appointment box",
+	"category": "mw",
+	"icon": "align-pull-right",
+	"description": "The highlighted box of the appointment section: a heading and a numbered list, or any paragraphs and lists.",
+	"parent": [ "mw/appointment" ],
+	"textdomain": "moira-wong-orthodontics",
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": false
+	},
+	"editorScript": "file:./index.js"
+}

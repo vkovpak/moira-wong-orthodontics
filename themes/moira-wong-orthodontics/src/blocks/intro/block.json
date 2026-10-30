@@ -13,6 +13,14 @@
 			"type": "string",
 			"default": "full"
 		},
+		"hasPhoto": {
+			"type": "boolean",
+			"default": true
+		},
+		"photoPosition": {
+			"type": "string",
+			"default": "left"
+		},
 		"mediaId": {
 			"type": "number"
 		},

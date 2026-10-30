@@ -38,6 +38,11 @@
 	margin-inline: 0;
 }
 
+.mw-about.photo-left .mw-about__text .block-list-appender {
+	left: 55px;
+	width: calc(100% - 55px - var(--mw-right-room));
+}
+
 .mw-about__text .block-editor-default-block-appender__content {
 	margin: 0;
 }

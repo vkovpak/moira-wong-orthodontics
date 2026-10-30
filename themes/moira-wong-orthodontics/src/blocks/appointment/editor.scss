@@ -1,0 +1,23 @@
+// InnerBlocks wraps the two columns in divs; flatten them so the columns are
+// flex items of .mw-appt__cols exactly as on the front end.
+.mw-appt__cols {
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+}
+
+// Before a picture is chosen the placeholder fills the photo slot and has the
+// size and the corners of the picture (the editor always shows the
+// slot, so it always lays out as with a photo).
+.mw-appt__photo .mw-appt__placeholder {
+	width: 390px;
+	max-width: 100%;
+	min-height: 47.6rem;
+	border-radius: 5px;
+}
+
+// The fields keep their front-end look.
+.mw-appt .rich-text {
+	min-height: 1em;
+}

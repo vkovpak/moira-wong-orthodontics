@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/appointment-text",
+	"title": "Appointment text",
+	"category": "mw",
+	"icon": "text",
+	"description": "The main text of the appointment section: paragraphs, headings and lists.",
+	"parent": [ "mw/appointment" ],
+	"textdomain": "moira-wong-orthodontics",
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": false
+	},
+	"editorScript": "file:./index.js"
+}

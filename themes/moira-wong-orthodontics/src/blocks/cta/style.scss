@@ -1,27 +1,33 @@
 // A button between two thin rules that run out to the edges of the content.
+// The rule is one line behind the button (::before); the button's shadow hides
+// it for 2rem around the button. Not ::after: the editor draws the selection
+// outline of the buttons block on that.
 // The longer selector beats the core layout rules that zero a block's margin.
 body .mw-cta.mw-section {
 	margin-block: 3.5rem;
 
 	.wp-block-buttons {
+		position: relative;
 		display: flex;
 		flex-wrap: nowrap;
 		align-items: center;
 		justify-content: center;
-		gap: 2rem;
 
-		&::before,
-		&::after {
+		&::before {
 			content: "";
-			flex: 1 1 0;
-			min-width: 0;
+			position: absolute;
+			inset-inline: 0;
+			top: 50%;
 			height: 1px;
 			background: var(--wp--preset--color--primary-line);
 		}
 
 		.wp-block-button {
+			position: relative;
+			z-index: 1;
 			flex: none;
 			max-width: 80%;
+			box-shadow: 0 0 0 2rem var(--wp--preset--color--base);
 		}
 	}
 }

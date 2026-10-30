@@ -8,7 +8,7 @@ import {
 	MediaUploadCheck,
 } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
-import MediaControl from '../../utils/media-control';
+import MediaControl, { imageIcon } from '../../utils/media-control';
 
 // What the field accepts: the usual WYSIWYG content. The paragraph / heading /
 // list blocks bring bold, italic, links, line breaks and nested lists with them.
@@ -74,7 +74,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								render={ ( { open } ) => (
 									<Button
 										className="mw-footer-text__icon-add"
-										icon="plus"
+										icon={ imageIcon }
 										label={ __(
 											'Add address icon',
 											'moira-wong-orthodontics'

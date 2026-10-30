@@ -1,15 +1,18 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { mediaId, mediaUrl, mediaAlt } = attributes;
+	const { hasPhoto, photoPosition, mediaId, mediaUrl, mediaAlt } = attributes;
+	const showPhoto = hasPhoto && mediaUrl;
 	const blockProps = useBlockProps.save( {
-		className: 'mw-intro mw-section',
+		className: `mw-intro mw-section${
+			showPhoto && photoPosition === 'right' ? ' photo-right' : ''
+		}`,
 	} );
 
 	return (
 		<section { ...blockProps }>
 			<div className="mw-content mw-intro__layout">
-				{ mediaUrl && (
+				{ showPhoto && (
 					<div className="mw-intro__photo">
 						<img
 							className={

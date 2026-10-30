@@ -68,10 +68,35 @@ $stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
 	}
 }
 
+// Photo on the right: the same layout mirrored, with the room kept on the left
+// of the text.
+.mw-intro.photo-right .mw-intro__layout {
+	grid-template-columns: $text-zone $photo-zone;
+	padding-right: 0;
+	padding-left: clamp(0px, calc(100cqi - #{$row}), #{$room-right});
+}
+
+.mw-intro.photo-right .mw-intro__photo {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+.mw-intro.photo-right .mw-intro__text {
+	grid-column: 1;
+	grid-row: 1;
+}
+
 @container (max-width: #{$stack}) {
-	.mw-intro__layout {
+	.mw-intro__layout,
+	.mw-intro.photo-right .mw-intro__layout {
 		grid-template-columns: minmax(0, 1fr);
-		padding-right: 0;
+		padding-inline: 0;
+	}
+
+	.mw-intro.photo-right .mw-intro__photo,
+	.mw-intro.photo-right .mw-intro__text {
+		grid-column: auto;
+		grid-row: auto;
 	}
 
 	.mw-intro__photo {
@@ -81,6 +106,11 @@ $stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
 	.mw-intro__text {
 		max-width: $text;
 		margin: 0 auto 5rem;
+	}
+
+	// With the photo above, the text is centred too. Without one the text is
+	// aligned by the alignment settings of its own blocks.
+	.mw-intro__layout:has(.mw-intro__photo) .mw-intro__text {
 		text-align: center;
 
 		p {
@@ -96,5 +126,18 @@ $stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
 @media (max-width: 700px) {
 	.mw-intro__text {
 		margin: 0 auto 4.2rem;
+	}
+}
+
+// Without a photo the text is the only thing in the layout: its block is
+// centred in the row, at most 800px wide. What is inside is aligned by the
+// alignment settings of the heading, paragraphs and buttons themselves.
+.mw-intro__layout:not(:has(.mw-intro__photo)) {
+	grid-template-columns: minmax(0, 1fr);
+	padding-right: 0;
+
+	.mw-intro__text {
+		max-width: 800px;
+		margin-inline: auto;
 	}
 }

@@ -8,6 +8,7 @@ import {
 } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import PhotoControls from '../../utils/photo-controls';
 
 // Heading and paragraphs are the usual core blocks, so they keep their own
 // toolbars; the theme styles them inside .mw-about__text.
@@ -29,9 +30,13 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { mediaId, mediaUrl, mediaAlt } = attributes;
+	const { hasPhoto, photoPosition, mediaId, mediaUrl, mediaAlt } = attributes;
 
-	const blockProps = useBlockProps( { className: 'mw-about mw-section' } );
+	const blockProps = useBlockProps( {
+		className: `mw-about mw-section${
+			hasPhoto && photoPosition === 'left' ? ' photo-left' : ''
+		}`,
+	} );
 
 	const onSelect = ( media ) =>
 		setAttributes( {
@@ -55,81 +60,99 @@ export default function Edit( { attributes, setAttributes } ) {
 	);
 
 	return (
-		<section { ...blockProps }>
-			<div className="mw-content mw-about__layout">
-				<div className="mw-about__text">
-					<InnerBlocks
-						template={ TEMPLATE }
-						allowedBlocks={ ALLOWED_BLOCKS }
-						templateLock={ false }
-					/>
-					<div className="mw-about__review">
-						{ field(
-							'mw-about__review-quote',
-							'reviewQuote',
-							__( 'Review', 'moira-wong-orthodontics' )
-						) }
-						{ field(
-							'mw-about__review-name',
-							'reviewName',
-							__( 'Who said it', 'moira-wong-orthodontics' )
-						) }
-					</div>
-				</div>
-				<div className="mw-about__photo">
-					<div className="mw-about__figure">
-						<div className="mw-about__bubble">
+		<>
+			<PhotoControls
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				withPosition
+			/>
+			<section { ...blockProps }>
+				<div className="mw-content mw-about__layout">
+					<div className="mw-about__text">
+						<InnerBlocks
+							template={ TEMPLATE }
+							allowedBlocks={ ALLOWED_BLOCKS }
+							templateLock={ false }
+						/>
+						<div className="mw-about__review">
 							{ field(
-								'mw-about__bubble-quote',
-								'bubbleQuote',
-								__( 'Quote', 'moira-wong-orthodontics' )
+								'mw-about__review-quote',
+								'reviewQuote',
+								__( 'Review', 'moira-wong-orthodontics' )
 							) }
 							{ field(
-								'mw-about__bubble-name',
-								'bubbleName',
+								'mw-about__review-name',
+								'reviewName',
 								__( 'Who said it', 'moira-wong-orthodontics' )
 							) }
 						</div>
-						{ mediaUrl ? (
-							<MediaControl
-								className="mw-about__image"
-								url={ mediaUrl }
-								alt={ mediaAlt }
-								id={ mediaId }
-								title={ __( 'Photo', 'moira-wong-orthodontics' ) }
-								onSelect={ onSelect }
-								onRemove={ onRemove }
-							/>
-						) : (
-							<div
-								className="mw-about__empty mw-media-control"
-								tabIndex={ 0 }
-								role="group"
-								aria-label={ __( 'Photo', 'moira-wong-orthodontics' ) }
-							>
-								<div className="mw-media-control__toolbar">
-									<MediaUploadCheck>
-										<MediaUpload
-											onSelect={ onSelect }
-											allowedTypes={ [ 'image' ] }
-											render={ ( { open } ) => (
-												<Button
-													icon={ imageIcon }
-													label={ __(
-														'Photo',
-														'moira-wong-orthodontics'
-													) }
-													onClick={ open }
-												/>
-											) }
-										/>
-									</MediaUploadCheck>
-								</div>
-							</div>
-						) }
 					</div>
+					{ hasPhoto && (
+						<div className="mw-about__photo">
+							<div className="mw-about__figure">
+								<div className="mw-about__bubble">
+									{ field(
+										'mw-about__bubble-quote',
+										'bubbleQuote',
+										__( 'Quote', 'moira-wong-orthodontics' )
+									) }
+									{ field(
+										'mw-about__bubble-name',
+										'bubbleName',
+										__(
+											'Who said it',
+											'moira-wong-orthodontics'
+										)
+									) }
+								</div>
+								{ mediaUrl ? (
+									<MediaControl
+										className="mw-about__image"
+										url={ mediaUrl }
+										alt={ mediaAlt }
+										id={ mediaId }
+										title={ __(
+											'Photo',
+											'moira-wong-orthodontics'
+										) }
+										onSelect={ onSelect }
+										onRemove={ onRemove }
+									/>
+								) : (
+									<div
+										className="mw-about__empty mw-media-control"
+										tabIndex={ 0 }
+										role="group"
+										aria-label={ __(
+											'Photo',
+											'moira-wong-orthodontics'
+										) }
+									>
+										<div className="mw-media-control__toolbar">
+											<MediaUploadCheck>
+												<MediaUpload
+													onSelect={ onSelect }
+													allowedTypes={ [ 'image' ] }
+													render={ ( { open } ) => (
+														<Button
+															icon={ imageIcon }
+															label={ __(
+																'Photo',
+																'moira-wong-orthodontics'
+															) }
+															onClick={ open }
+														/>
+													) }
+												/>
+											</MediaUploadCheck>
+										</div>
+									</div>
+								) }
+							</div>
+						</div>
+					) }
 				</div>
-			</div>
-		</section>
+			</section>
+		</>
 	);
 }

@@ -1,0 +1,212 @@
+// A round photo on the left; on the right a heading, then the text and a
+// highlighted box side by side, then a footnote paragraph on a row of its own.
+// Everything wraps instead of shrinking, in this order as the container
+// narrows:
+//   1. the photo goes above the right side and is centred,
+//   2. the box goes under the text,
+//   3. only then do the text, the box and the photo shrink to fit.
+// At full size the row is 390px of photo, 35px, then 591px (285px of text,
+// 23px, 283px of box). Without a photo the right side is 800px wide (the text
+// and the box grow into it), its heading is centred and the room above and
+// below the text is 6rem; with a photo it is 8rem (and 6rem again below the
+// bottom on a narrow screen).
+$photo: 390px;
+$gap: 35px;
+$text: 285px;
+$box: 283px;
+$cols-gap: 23px;
+$body: $text + $cols-gap + $box;
+$row: $photo + $gap + $body;
+$body-wide: 800px;
+
+// The list numbers get a colon and a little room after them.
+@counter-style mw-colon {
+	system: extends decimal;
+	suffix: ":\a0\a0\a0";
+}
+
+.mw-appt {
+	container-type: inline-size;
+}
+
+.mw-appt__layout {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: center;
+	column-gap: $gap;
+}
+
+.mw-appt.photo-right .mw-appt__layout {
+	flex-direction: row-reverse;
+}
+
+.mw-appt__photo {
+	flex: none;
+	max-width: 100%;
+	margin-block: 2.5rem;
+}
+
+.mw-appt__image img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 5px;
+}
+
+.mw-appt__body {
+	flex: 0 1 $body-wide;
+	min-width: 0;
+	padding-block: 6rem;
+}
+
+.mw-appt.has-photo .mw-appt__body {
+	flex-basis: $body;
+	padding-block: 8rem;
+}
+
+.mw-appt .mw-appt__title {
+	margin: 0 0 2.5rem;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
+.mw-appt:not(.has-photo) .mw-appt__title {
+	text-align: center;
+}
+
+.mw-appt__cols {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3rem $cols-gap;
+}
+
+.mw-appt__text {
+	flex: 1 1 $text;
+	min-width: 0;
+	margin-top: 1.6rem;
+}
+
+.mw-appt-box {
+	flex: 1 1 $box;
+	box-sizing: border-box;
+	min-width: 0;
+	padding: 1.9rem 2.4rem 3.3rem 2.3rem;
+	border-radius: 6px;
+	background: var(--wp--preset--color--cream-dark);
+}
+
+.mw-appt .mw-appt__footnote {
+	flex: 0 0 100%;
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 600;
+	line-height: 1.22;
+
+	&.has-text-align-center {
+		text-align: center;
+	}
+
+	&.has-text-align-right {
+		text-align: right;
+	}
+
+	&.has-text-align-left {
+		text-align: left;
+	}
+}
+
+// What can be written in the text and in the box. Descendant selectors: in the
+// editor the blocks sit inside InnerBlocks wrappers.
+.mw-appt__text,
+.mw-appt-box {
+	p,
+	li {
+		font-size: 1.8rem;
+	}
+
+	p {
+		margin: 2.4rem 0 0;
+	}
+
+	:is(p, h3, ul, ol):first-child {
+		margin-top: 0;
+	}
+
+	h3 {
+		margin: 2.4rem 0 0;
+		font-size: 2rem;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	ul,
+	ol {
+		margin: 2.4rem 0 0;
+		padding-left: 2.5rem;
+	}
+
+	li + li {
+		margin-top: 0.9rem;
+	}
+
+	ol {
+		list-style-type: mw-colon;
+	}
+
+	li::marker {
+		font-weight: 600;
+	}
+}
+
+.mw-appt__text {
+	p,
+	li {
+		font-weight: 300;
+		line-height: 1.33;
+	}
+}
+
+.mw-appt-box {
+	p,
+	li {
+		font-weight: 400;
+		line-height: 1.22;
+	}
+
+	// The heading is followed by the list a little further down.
+	h3 {
+		margin-bottom: 2.9rem;
+	}
+
+	h3:not(:first-child) {
+		margin-top: 2.4rem;
+	}
+}
+
+// With the photo above the right side its own room below it is all the room
+// the text needs above, the heading is centred and the side is 680px wide, so
+// the text and the box grow a little.
+@container (max-width: #{$row - 1px}) {
+	.mw-appt.has-photo .mw-appt__body {
+		flex-basis: 680px;
+		padding-top: 0;
+	}
+
+	.mw-appt.has-photo .mw-appt__title {
+		text-align: center;
+	}
+}
+
+@media (max-width: 700px) {
+	.mw-appt.has-photo .mw-appt__body {
+		padding-bottom: 6rem;
+	}
+}
+
+// The box under the text: the text needs no room above to line up with it.
+@container (max-width: #{$body - 1px}) {
+	.mw-appt__text {
+		margin-top: 0;
+	}
+}

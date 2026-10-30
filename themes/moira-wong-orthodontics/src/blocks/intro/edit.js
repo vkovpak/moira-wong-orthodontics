@@ -5,6 +5,7 @@ import {
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import PhotoControls from '../../utils/photo-controls';
 
 // Heading, text and button are the usual core blocks, so they keep their own
 // toolbars; the theme styles them inside .mw-intro__text.
@@ -35,9 +36,13 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { mediaId, mediaUrl, mediaAlt } = attributes;
+	const { hasPhoto, photoPosition, mediaId, mediaUrl, mediaAlt } = attributes;
 
-	const blockProps = useBlockProps( { className: 'mw-intro mw-section' } );
+	const blockProps = useBlockProps( {
+		className: `mw-intro mw-section${
+			hasPhoto && photoPosition === 'right' ? ' photo-right' : ''
+		}`,
+	} );
 
 	const onSelect = ( media ) =>
 		setAttributes( {
@@ -50,40 +55,55 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( { mediaId: undefined, mediaUrl: '', mediaAlt: '' } );
 
 	return (
-		<section { ...blockProps }>
-			<div className="mw-content mw-intro__layout">
-				<div className="mw-intro__photo">
-					{ mediaUrl ? (
-						<MediaControl
-							className="mw-intro__image"
-							url={ mediaUrl }
-							alt={ mediaAlt }
-							id={ mediaId }
-							title={ __( 'Photo', 'moira-wong-orthodontics' ) }
-							onSelect={ onSelect }
-							onRemove={ onRemove }
-						/>
-					) : (
-						<MediaPlaceholder
-							className="mw-photo-placeholder mw-intro__placeholder"
-							icon={ imageIcon }
-							labels={ {
-								title: __( 'Photo', 'moira-wong-orthodontics' ),
-							} }
-							allowedTypes={ [ 'image' ] }
-							accept="image/*"
-							onSelect={ onSelect }
-						/>
+		<>
+			<PhotoControls
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				withPosition
+			/>
+			<section { ...blockProps }>
+				<div className="mw-content mw-intro__layout">
+					{ hasPhoto && (
+						<div className="mw-intro__photo">
+							{ mediaUrl ? (
+								<MediaControl
+									className="mw-intro__image"
+									url={ mediaUrl }
+									alt={ mediaAlt }
+									id={ mediaId }
+									title={ __(
+										'Photo',
+										'moira-wong-orthodontics'
+									) }
+									onSelect={ onSelect }
+									onRemove={ onRemove }
+								/>
+							) : (
+								<MediaPlaceholder
+									className="mw-photo-placeholder mw-intro__placeholder"
+									icon={ imageIcon }
+									labels={ {
+										title: __(
+											'Photo',
+											'moira-wong-orthodontics'
+										),
+									} }
+									allowedTypes={ [ 'image' ] }
+									accept="image/*"
+									onSelect={ onSelect }
+								/>
+							) }
+						</div>
 					) }
+					<div className="mw-intro__text">
+						<InnerBlocks
+							template={ TEMPLATE }
+							allowedBlocks={ ALLOWED_BLOCKS }
+							templateLock={ false }
+						/>
+					</div>
 				</div>
-				<div className="mw-intro__text">
-					<InnerBlocks
-						template={ TEMPLATE }
-						allowedBlocks={ ALLOWED_BLOCKS }
-						templateLock={ false }
-					/>
-				</div>
-			</div>
-		</section>
+			</section>
+		</>
 	);
 }
