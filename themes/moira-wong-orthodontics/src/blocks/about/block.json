@@ -1,0 +1,62 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mw/about",
+	"title": "About",
+	"category": "mw",
+	"icon": "id",
+	"description": "Heading and text with a review under them, a round quote bubble and a photo on the right.",
+	"keywords": [ "about", "doctor", "bio", "quote" ],
+	"textdomain": "moira-wong-orthodontics",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"mediaId": {
+			"type": "number"
+		},
+		"mediaUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-about__image img",
+			"attribute": "src",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": ".mw-about__image img",
+			"attribute": "alt",
+			"default": ""
+		},
+		"bubbleQuote": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-about__bubble-quote"
+		},
+		"bubbleName": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-about__bubble-name"
+		},
+		"reviewQuote": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-about__review-quote"
+		},
+		"reviewName": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mw-about__review-name"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

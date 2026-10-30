@@ -1,0 +1,228 @@
+@use "sass:math";
+
+// Text on the left, a 425px photo zone on the right. The round quote bubble
+// sticks out $bubble-out to the left of the zone, and the text keeps 80px
+// clear of it. At the full 1200px content width the text area (what is left
+// after the zone and the bubble) is 674px: 100px of room on its left, 494px of
+// text, 80px of room on its right. When the container narrows, those three
+// shrink together (--mw-room is the text area's width); the heading's own room
+// on the right stays 35px.
+// Below $stack the photo goes under the text and everything is centred.
+$full: 1200px;
+$zone: 425px;
+$bubble-out: 101px;
+$bubble: 258px;
+$text-area: $full - $zone - $bubble-out; // 674px
+$pad-left: 100px;
+$pad-right: 80px;
+$title-right: 35px;
+// Fixed part of the room on the right of the paragraphs.
+$right-out: 105px;
+$stack: 1210px;
+// How far the bubble sticks out to the left of the picture, and its offset
+// from the picture's top edge.
+$bubble-left: 160px;
+$bubble-top: -5px;
+$photo-w: 321px;
+// In the stacked layout bubble and picture stay side by side. On a narrow
+// screen the bubble may come 10px closer to the left edge and 20% of the
+// picture may go past the right one; below that the pair shrinks (zoom).
+$reach-left: 10px;
+$reach-right: 64px; // 20% of the picture
+$pair: $bubble-left + $photo-w;
+$reach: $reach-left + $reach-right;
+// The picture's left edge when the pair is centred: 50cqi + this * zoom.
+$mid-shift: $bubble-left - $pair * 0.5;
+
+$left-share: math.div($pad-left, $text-area);
+$right-share: math.div($pad-right, $text-area);
+
+.mw-about {
+	--mw-room: calc(min(100cqi, #{$full}) - #{$zone + $bubble-out});
+
+	container-type: inline-size;
+	overflow-x: clip;
+	// The room above the text and the photo alike.
+	padding-top: 3.5rem;
+	border-block: 1px solid var(--wp--preset--color--base);
+	background: var(--wp--preset--color--cream-light);
+	// The bubble's disc sits under the picture but above this background.
+	isolation: isolate;
+}
+
+.mw-about__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) $zone;
+	align-items: center;
+}
+
+.mw-about__text {
+	box-sizing: border-box;
+	padding-bottom: 35px;
+	padding-left: calc(var(--mw-room) * #{$left-share});
+	// The room kept clear on the right of the paragraphs, the review and the
+	// editor's block appender: a fixed 105px plus a share of the text area.
+	--mw-right-room: calc(#{$right-out} + var(--mw-room) * #{$right-share});
+}
+
+// Descendant selectors throughout: in the editor the blocks sit inside
+// InnerBlocks wrappers, and they outrank theme.json's element styles.
+.mw-about__text {
+	h2 {
+		margin: 0 #{$bubble-out + $title-right} 0 0;
+		font-weight: 400;
+		line-height: 1.2;
+	}
+
+	p {
+		margin: 2.4rem var(--mw-right-room) 0 0;
+		font-size: 1.8rem;
+		font-weight: 300;
+		line-height: 1.33;
+	}
+
+	h2 + p {
+		margin-top: 2rem;
+	}
+}
+
+// The review under the text, its box indented on the left by a tenth of the
+// text's width.
+.mw-about__review {
+	margin: 3rem var(--mw-right-room) 0 0;
+	padding-left: 10.3%;
+	text-align: center;
+}
+
+.mw-about__text .mw-about__review {
+	p {
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.mw-about__review-quote {
+		font-weight: 600;
+	}
+
+	.mw-about__review-name {
+		margin-top: 0.3rem;
+		font-size: 1.5rem;
+		text-transform: uppercase;
+	}
+}
+
+// The photo sits in the middle of its zone, on the section's bottom edge. It is
+// a cut-out PNG: the bubble and the background show through its transparency.
+.mw-about__photo {
+	display: flex;
+	align-self: end;
+	justify-content: center;
+	padding-top: -$bubble-top;
+}
+
+.mw-about__figure {
+	position: relative;
+	max-width: 100%;
+}
+
+.mw-about__image {
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		border-radius: 5px 5px 0 0;
+	}
+}
+
+// The bubble's disc (::before) is under the picture, its text over it.
+.mw-about__bubble {
+	position: absolute;
+	top: $bubble-top;
+	left: -$bubble-left;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: $bubble;
+	height: $bubble;
+	padding-inline: 2.9rem;
+	text-align: center;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-radius: 50%;
+		background: var(--wp--preset--color--accent);
+	}
+
+	p {
+		margin: 0;
+		font-weight: 300;
+	}
+
+	.mw-about__bubble-quote {
+		font-size: 2.2rem;
+		line-height: 1.27;
+	}
+
+	.mw-about__bubble-name {
+		margin-top: 1rem;
+		font-size: 1.5rem;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+}
+
+@container (max-width: #{$stack}) {
+	.mw-about__layout {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.mw-about__text {
+		max-width: 70rem;
+		margin-inline: auto;
+		padding-left: 0;
+		text-align: center;
+		--mw-right-room: 0px;
+
+		h2 {
+			margin-right: 0;
+		}
+	}
+
+	.mw-about__review {
+		padding-left: 0;
+	}
+
+	// --mw-zoom is 1 while the pair fits, then falls with the container width.
+	// The picture's left edge is centred in the room, but never further left
+	// than --mw-edge puts the bubble. Both are measured after the zoom, and the
+	// margin is divided by it again because a margin is zoomed too.
+	.mw-about__photo {
+		--mw-zoom: min(1, tan(atan2(calc(100cqi + #{$reach}), #{$pair})));
+		--mw-edge: calc(#{$bubble-left} * var(--mw-zoom) - #{$reach-left});
+		--mw-mid: calc(50cqi + #{$mid-shift} * var(--mw-zoom));
+
+		justify-content: flex-start;
+	}
+
+	.mw-about__figure {
+		flex: none;
+		max-width: none;
+		zoom: var(--mw-zoom);
+		margin-left: calc(max(var(--mw-edge), var(--mw-mid)) / var(--mw-zoom));
+	}
+}
+
+@media (max-width: 600px) {
+	.mw-about {
+		padding-top: 2.8rem;
+	}
+
+	.mw-about__review {
+		margin-top: 2rem;
+	}
+}

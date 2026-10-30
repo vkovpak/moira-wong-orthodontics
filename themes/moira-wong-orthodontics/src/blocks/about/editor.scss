@@ -1,0 +1,43 @@
+// An empty photo slot: a grey outlined box 410px high under the bubble, with
+// the toolbar always showing (a filled slot shows it on hover only).
+.mw-about .mw-about__empty {
+	width: 321px;
+	height: 410px;
+	max-width: 100%;
+	background: var(--wp--preset--color--background);
+	border-radius: 5px 5px 0 0;
+	box-shadow: inset 0 0 0 1px var(--wp--preset--color--grey-light);
+
+	.mw-media-control__toolbar {
+		opacity: 1;
+	}
+}
+
+// With no picture yet the bubble sits 10px from the top of the grey box.
+.mw-about__figure:has(.mw-about__empty) .mw-about__bubble {
+	top: 10px;
+	z-index: 1;
+}
+
+// The toolbar of a loaded picture is above the bubble.
+.mw-about__image .mw-media-control__toolbar {
+	z-index: 3;
+}
+
+// The text fields keep their front-end look.
+.mw-about .rich-text {
+	min-height: 1em;
+}
+
+// The editor's "add block" button floats over the gap before the review (it
+// takes no room, so selecting the block moves nothing) and sits at the right
+// end of the paragraphs, not under the bubble.
+.mw-about__text .block-list-appender {
+	left: 0;
+	width: calc(100% - var(--mw-right-room));
+	margin-inline: 0;
+}
+
+.mw-about__text .block-editor-default-block-appender__content {
+	margin: 0;
+}

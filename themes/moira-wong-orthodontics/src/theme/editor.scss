@@ -84,7 +84,13 @@
 }
 
 // Empty state of every image slot: grey box with a light outline, muted label
-// and instructions, white secondary buttons.
+// and instructions, white secondary buttons. The pointer is the plain arrow:
+// the editor's grab cursor would suggest the box can be dragged.
+.components-placeholder.components-placeholder,
+.mw-media-control:not(:has(img)) {
+	cursor: default;
+}
+
 .components-placeholder.components-placeholder {
 	justify-content: center;
 	background: var(--wp--preset--color--background);

@@ -46,6 +46,7 @@ $pad-calc: calc(#{$pad-min} + (100cqi - #{$phase-2-end}) / 4);
 
 .mw-testimonials {
 	container-type: inline-size;
+	overflow-x: hidden;
 	margin-bottom: 7rem !important;
 }
 
