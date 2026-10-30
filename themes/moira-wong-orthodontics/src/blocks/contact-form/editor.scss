@@ -1,0 +1,70 @@
+// Before a picture is chosen the placeholder fills the photo slot and has the
+// size of the picture.
+.mw-contact__photo .mw-contact__placeholder {
+	width: 452px;
+	max-width: 100%;
+	min-height: 50.3rem;
+	border-radius: 5px;
+}
+
+// A sketch of the form, in the form's own proportions. It is faded: the real
+// form shows on the site only and its fields may change.
+.mw-contact__sketch {
+	pointer-events: none;
+
+	> :not(.mw-contact__sketch-note) {
+		opacity: 0.5;
+	}
+}
+
+.mw-contact__sketch-label {
+	display: block;
+	margin-bottom: 0.9rem;
+	font-size: 1.6rem;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
+.mw-contact__sketch-box {
+	display: block;
+	box-sizing: border-box;
+	height: 3.7rem;
+	margin-bottom: 2.2rem;
+	border: 1px solid var(--wp--preset--color--grey-light);
+	border-radius: 3px;
+	background: var(--wp--preset--color--base);
+
+	&.is-tall {
+		height: 11.1rem;
+	}
+}
+
+.mw-contact__sketch-row {
+	display: flex;
+	gap: 1.4rem;
+
+	> div:first-child {
+		flex: 1 1 0;
+	}
+
+	> div:last-child {
+		flex: none;
+		width: 10.3rem;
+	}
+}
+
+.mw-contact__sketch-note {
+	margin: 0;
+	font-size: 1.3rem;
+	word-break: break-all;
+}
+
+// The fields keep their front-end look.
+.mw-contact .rich-text {
+	min-height: 1em;
+}
+
+// With no photo the form is centred, and so is its note.
+.mw-contact:not(.has-photo) .mw-contact__sketch-note {
+	text-align: center;
+}

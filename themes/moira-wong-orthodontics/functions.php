@@ -143,7 +143,7 @@ function mw_maybe_hide_footer_logos( $block_content, $parsed_block ) {
 add_filter( 'render_block_mw/logos', 'mw_maybe_hide_footer_logos', 10, 2 );
 
 /**
- * Editor-only script: the page settings panel.
+ * Editor-only script: the page settings panel and the logo size lock.
  */
 function mw_enqueue_editor_script() {
 	$js    = MW_DIR . '/build/theme/editor.js';
@@ -153,6 +153,9 @@ function mw_enqueue_editor_script() {
 		$meta = require $asset;
 		wp_enqueue_script( 'mw-editor', get_template_directory_uri() . '/build/theme/editor.js', $meta['dependencies'], (string) filemtime( $js ), true );
 	}
+
+	// Hides the Site Logo's "Image width" setting while the header or footer logo is selected (see src/theme/editor.js).
+	wp_add_inline_style( 'wp-block-editor', 'body.mw-logo-size-locked .block-editor-block-inspector .components-tools-panel-item:has(input[type="range"]) { display: none; }' );
 }
 add_action( 'enqueue_block_editor_assets', 'mw_enqueue_editor_script' );
 
@@ -179,3 +182,22 @@ function mw_bust_block_asset_cache( $src ) {
 }
 add_filter( 'style_loader_src', 'mw_bust_block_asset_cache' );
 add_filter( 'script_loader_src', 'mw_bust_block_asset_cache' );
+
+/**
+ * Contact Form 7 writes its fields exactly as the form template has them, with no automatic paragraphs or line breaks added around them.
+ */
+add_filter( 'wpcf7_autop_or_not', '__return_false' );
+
+/**
+ * In the local Docker setup all mail goes to Mailpit (http://localhost:8025) instead of out of the container.
+ */
+function mw_local_mail_to_mailpit( $phpmailer ) {
+	$phpmailer->isSMTP();
+	$phpmailer->Host         = 'mailpit';
+	$phpmailer->Port         = 1025;
+	$phpmailer->SMTPAuth     = false;
+	$phpmailer->SMTPAutoTLS  = false;
+}
+if ( 'local' === wp_get_environment_type() ) {
+	add_action( 'phpmailer_init', 'mw_local_mail_to_mailpit' );
+}

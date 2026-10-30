@@ -7,21 +7,24 @@
 	}
 }
 
-// The editor wraps the logo in a ResizableBox with an inline pixel width
-// (120px by default) and max-width (1450px). Cap it at the card, as on the
-// front end, so dragging the handle cannot push the logo outside the card.
-// While no width is set, also reset it to auto so the logo shows at its
-// natural size; once a width is chosen the class goes away and it is kept.
+// The logo's size is not a setting here: the card sets it, as on the front end.
+// The editor wraps the logo in a ResizableBox with an inline pixel width; that
+// width is ignored, capped at the card's full width (--mw-logo-w) and the
+// resize handles are hidden.
 .mw-header__inner .mw-header__logo {
 	// The link around the image carries the padding, so the box grows with it.
 	.components-resizable-box__container {
-		max-width: 100% !important;
-		max-height: 100% !important;
+		width: auto !important;
+		max-width: var(--mw-logo-w) !important;
 		height: auto !important;
+		max-height: 100% !important;
 	}
 
-	&.is-default-size .components-resizable-box__container {
+	.components-resizable-box__handle {
+		display: none !important;
+	}
+
+	.custom-logo-link img {
 		width: auto !important;
-		height: auto !important;
 	}
 }

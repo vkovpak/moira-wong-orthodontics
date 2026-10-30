@@ -8,13 +8,14 @@
 }
 
 // The address icon slot before an icon is chosen: the dark picture button of
-// the other image slots' toolbars.
+// the other image slots' toolbars. As wide as the icon (26px), so that the
+// text beside it stays where it is.
 .mw-footer-text__icon-add.components-button {
 	flex: none;
-	width: 28px;
+	width: 26px;
 	height: 28px;
-	min-width: 28px;
-	padding: 4px;
+	min-width: 26px;
+	padding: 4px 3px;
 	justify-content: center;
 	background: rgba(0, 0, 0, 0.6);
 	border-radius: 4px;
@@ -39,11 +40,16 @@
 	}
 }
 
-// The resize box of the Site Logo is capped like the front end while the handle
-// is dragged: 400px wide and, via --mw-logo-max-height, the matching height for
-// the logo's aspect ratio; edit.js snaps the saved size to the limit on
-// release.
-.mw-footer__logo .components-resizable-box__container {
-	max-width: min(100%, 400px) !important;
-	max-height: var(--mw-logo-max-height) !important;
+// The logo's size is not a setting here: the stylesheet sets it, as on the
+// front end. The editor's resize handles are hidden and its inline width is
+// ignored.
+.mw-footer__logo {
+	.components-resizable-box__container {
+		width: auto !important;
+		height: auto !important;
+	}
+
+	.components-resizable-box__handle {
+		display: none !important;
+	}
 }

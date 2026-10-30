@@ -8,8 +8,7 @@
 // At full size the row is 390px of photo, 35px, then 591px (285px of text,
 // 23px, 283px of box). Without a photo the right side is 800px wide (the text
 // and the box grow into it), its heading is centred and the room above and
-// below the text is 6rem; with a photo it is 8rem (and 6rem again below the
-// bottom on a narrow screen).
+// below the section is 6rem; with a photo the room above the text is 8rem.
 $photo: 390px;
 $gap: 35px;
 $text: 285px;
@@ -25,8 +24,11 @@ $body-wide: 800px;
 	suffix: ":\a0\a0\a0";
 }
 
-.mw-appt {
+// The room below the section is its margin, 6rem. The longer selector beats the
+// core layout rules that zero a block's margin.
+body .mw-appt.mw-section {
 	container-type: inline-size;
+	margin-bottom: 6rem;
 }
 
 .mw-appt__layout {
@@ -57,12 +59,12 @@ $body-wide: 800px;
 .mw-appt__body {
 	flex: 0 1 $body-wide;
 	min-width: 0;
-	padding-block: 6rem;
+	padding-top: 6rem;
 }
 
 .mw-appt.has-photo .mw-appt__body {
 	flex-basis: $body;
-	padding-block: 8rem;
+	padding-top: 8rem;
 }
 
 .mw-appt .mw-appt__title {
@@ -193,14 +195,9 @@ $body-wide: 800px;
 		padding-top: 0;
 	}
 
-	.mw-appt.has-photo .mw-appt__title {
+	.mw-appt.has-photo .mw-appt__title,
+	.mw-appt.has-photo .mw-appt__footnote:not([class*="has-text-align"]) {
 		text-align: center;
-	}
-}
-
-@media (max-width: 700px) {
-	.mw-appt.has-photo .mw-appt__body {
-		padding-bottom: 6rem;
 	}
 }
 
@@ -208,5 +205,40 @@ $body-wide: 800px;
 @container (max-width: #{$body - 1px}) {
 	.mw-appt__text {
 		margin-top: 0;
+	}
+}
+
+// A narrow screen: the room below the section is 5.5rem.
+@media (max-width: 600px) {
+	body .mw-appt.mw-section {
+		margin-bottom: 5.5rem;
+	}
+}
+
+// A phone: the section ends 4rem above what follows, and the box runs the full
+// width of the screen, square. The section has no side padding then, so the
+// heading, the text, the footnote, the photo and the box's own contents keep
+// the gutter themselves, which gets smaller on the smallest screens.
+@media (max-width: 500px) {
+	body .mw-appt.mw-section {
+		margin-bottom: 4rem;
+		padding-inline: 0;
+	}
+
+	.mw-appt .mw-appt__title,
+	.mw-appt .mw-appt__footnote,
+	.mw-appt__text {
+		box-sizing: border-box;
+		padding-inline: var(--wp--custom--gutter);
+	}
+
+	.mw-appt__photo {
+		box-sizing: border-box;
+		padding-inline: var(--wp--custom--gutter);
+	}
+
+	.mw-appt-box {
+		padding-inline: var(--wp--custom--gutter);
+		border-radius: 0;
 	}
 }

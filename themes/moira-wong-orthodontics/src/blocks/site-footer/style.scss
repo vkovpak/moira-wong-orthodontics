@@ -18,15 +18,18 @@
 	.mw-footer__logo {
 		grid-column: 1;
 		justify-self: start;
-		max-width: min(100%, 400px);
 		margin: 0;
 
 		a {
 			display: block;
 		}
 
-		&.is-default-size img {
-			width: auto;
+		// The size is set here, not by the width chosen for the logo in the editor
+		// (the layout is built around it): 280px, less on a narrower screen.
+		img {
+			width: 280px !important;
+			max-width: 100%;
+			height: auto !important;
 		}
 	}
 
@@ -117,6 +120,26 @@
 			padding-left: 3.2rem;
 			font-size: var(--wp--preset--font-size--small);
 			line-height: 1.8;
+		}
+	}
+}
+
+// A phone: the logo and the treatments line are centred, the treatments with
+// no room on their left, and the address block, at most 315px wide, is centred.
+@media (max-width: 500px) {
+	.mw-footer__layout {
+		.mw-footer__logo {
+			justify-self: center;
+		}
+
+		.mw-footer__address {
+			max-width: 315px;
+			margin: 0 auto;
+		}
+
+		.mw-footer__treatments {
+			padding-left: 0;
+			text-align: center;
 		}
 	}
 }

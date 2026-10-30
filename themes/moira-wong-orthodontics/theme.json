@@ -23,6 +23,7 @@
 				{ "slug": "cream", "name": "Cream", "color": "#fdf9e6" },
 				{ "slug": "cream-light", "name": "Cream Light", "color": "#fdfbed" },
 				{ "slug": "cream-dark", "name": "Cream Dark", "color": "#fbf7dd" },
+				{ "slug": "cream-band", "name": "Cream Band", "color": "#f7eeb6" },
 				{ "slug": "background", "name": "Off White", "color": "#f7f7f7" },
 				{ "slug": "grey-light", "name": "Light Grey", "color": "#cdcdcd" },
 				{ "slug": "grey-medium", "name": "Medium Grey", "color": "#878786" }

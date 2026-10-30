@@ -1,0 +1,346 @@
+// One rounded card: a band with the heading on top, the text, then the photo
+// in the bottom left corner and the form beside it. The form's column is a
+// fixed 64rem; the photo zone is what is left of the row (56rem at the full
+// 1200px) and only the photo shrinks with it, centred in its zone on the card's
+// bottom edge. Below $stack the form goes first and the photo comes under it;
+// with no photo the form is centred.
+$form-col: 64rem;
+$stack: 1000px;
+$field-line: var(--wp--preset--color--grey-light);
+
+// The room above and below is margin. The longer selector beats the core
+// layout rules that zero a block's margin.
+body .mw-contact.mw-section {
+	container-type: inline-size;
+	margin-block: 6.5rem 5.5rem;
+}
+
+.mw-contact__card {
+	overflow: hidden;
+	border-radius: 5px;
+	background: var(--wp--preset--color--cream-dark);
+}
+
+.mw-contact .mw-contact__title {
+	margin: 0;
+	padding: 2.4rem 2rem;
+	background: var(--wp--preset--color--cream-band);
+	font-size: 2.6rem;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+}
+
+// What can be written above the form. Descendant selectors: in the editor the
+// blocks sit inside InnerBlocks wrappers.
+.mw-contact__text {
+	padding: 2rem 2rem 0;
+
+	p,
+	li {
+		font-size: 2rem;
+		font-weight: 400;
+		line-height: 1.4;
+	}
+
+	// The lines the author breaks stay; each of them, when it has to wrap on a
+	// narrow screen, splits into even halves instead of leaving a word alone.
+	p {
+		margin: 0;
+		text-wrap: balance;
+	}
+
+	:is(p, h3, ul, ol, .wp-block-buttons) + :is(p, h3, ul, ol, .wp-block-buttons) {
+		margin-top: 1.6rem;
+	}
+}
+
+.mw-contact__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) $form-col;
+	align-items: end;
+}
+
+.mw-contact:not(.has-photo) .mw-contact__row {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+// The photo has the same room above it as the form (2.5rem); under the form it
+// has 4.5rem.
+.mw-contact__photo {
+	display: flex;
+	justify-content: center;
+	min-width: 0;
+	padding-top: 2.5rem;
+}
+
+.mw-contact__image img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-top-right-radius: 5px;
+}
+
+.mw-contact__form {
+	align-self: start;
+	box-sizing: border-box;
+	padding: 2.5rem 9.6rem 3.6rem 5.2rem;
+}
+
+.mw-contact:not(.has-photo) .mw-contact__form {
+	width: 100%;
+	max-width: 66rem;
+	margin-inline: auto;
+	padding-inline: 2rem;
+}
+
+// The Contact Form 7 form (see the form's template).
+.mw-contact__form {
+	.wpcf7-form-control-wrap {
+		display: block;
+	}
+
+	label {
+		display: block;
+		font-size: 1.6rem;
+		font-weight: 400;
+		line-height: 1.2;
+	}
+
+	.mw-cf__label {
+		display: block;
+		margin-bottom: 0.9rem;
+		font-weight: 400;
+	}
+
+	.mw-cf__field,
+	.mw-cf__row {
+		margin-bottom: 2.2rem;
+	}
+
+	.mw-cf__row {
+		display: flex;
+		gap: 1.4rem;
+
+		.mw-cf__field {
+			margin-bottom: 0;
+		}
+
+		.mw-cf__field--grow {
+			flex: 1 1 0;
+			min-width: 0;
+		}
+
+		.mw-cf__field--age {
+			flex: none;
+			width: 10.3rem;
+		}
+	}
+
+	input[type="text"],
+	input[type="tel"],
+	input[type="email"],
+	textarea {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		height: 3.7rem;
+		padding: 0 1rem;
+		border: 1px solid $field-line;
+		border-radius: 3px;
+		background: var(--wp--preset--color--base);
+		color: inherit;
+		font: inherit;
+		font-size: 1.6rem;
+	}
+
+	textarea {
+		height: 11.1rem;
+		min-height: 11.1rem;
+		padding-block: 0.8rem;
+		resize: vertical;
+	}
+
+	input:focus,
+	textarea:focus {
+		outline: none;
+	}
+
+	.mw-cf__consent {
+		margin-bottom: 4.7rem;
+	}
+
+	.wpcf7-list-item {
+		display: block;
+		margin: 0;
+	}
+
+	.wpcf7-acceptance label {
+		display: flex;
+		align-items: flex-start;
+		gap: 1.4rem;
+		font-size: 1.5rem;
+		line-height: 1.2;
+	}
+
+	.wpcf7-acceptance input[type="checkbox"] {
+		flex: none;
+		width: 2.2rem;
+		height: 2.2rem;
+		margin: 0;
+		border: 1px solid $field-line;
+		border-radius: 4px;
+		appearance: none;
+		background: var(--wp--preset--color--base) center / 1.4rem no-repeat;
+
+		&:checked {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7.5l3.2 3L12 3.5' fill='none' stroke='%23252f37' stroke-width='2'/%3E%3C/svg%3E");
+		}
+	}
+
+	.wpcf7-acceptance a {
+		font-weight: 700;
+		text-decoration: underline;
+	}
+
+	.mw-cf__submit {
+		text-align: right;
+	}
+
+	// A <button>, not an input, so that its text can wrap onto two lines on a
+	// narrow screen like the other buttons.
+	.wpcf7-submit {
+		max-width: 100%;
+		text-align: center;
+	}
+
+	// The same hover as the yellow buttons of the blocks (theme.scss).
+	.wpcf7-submit:hover {
+		background-color: var(--wp--preset--color--contrast);
+		color: var(--wp--preset--color--base);
+	}
+
+	.wpcf7-not-valid-tip {
+		margin-top: 0.4rem;
+		color: #b32d2e;
+		font-size: 1.3rem;
+	}
+
+	.wpcf7-response-output {
+		margin: 2rem 0 0;
+		font-size: 1.5rem;
+	}
+
+	.wpcf7-spinner {
+		display: none;
+	}
+}
+
+// Photo on the right: the columns swap, the photo sits in the bottom right
+// corner and its top left corner is the rounded one.
+.mw-contact.photo-right {
+	.mw-contact__row {
+		grid-template-columns: $form-col minmax(0, 1fr);
+	}
+
+	.mw-contact__form {
+		grid-column: 1;
+		grid-row: 1;
+		padding: 2.5rem 5.2rem 3.6rem 9.6rem;
+	}
+
+	.mw-contact__photo {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.mw-contact__image img {
+		border-top-left-radius: 5px;
+		border-top-right-radius: 0;
+	}
+}
+
+@container (max-width: #{$stack}) {
+	.mw-contact__row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.mw-contact.photo-right {
+		.mw-contact__row {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.mw-contact__form,
+		.mw-contact__photo {
+			grid-column: auto;
+			grid-row: auto;
+		}
+
+		.mw-contact__form {
+			padding: 2.5rem 2rem 0;
+		}
+
+		.mw-contact__image img {
+			border-top-left-radius: 0;
+			border-top-right-radius: 5px;
+		}
+	}
+
+	// The form is at most 58rem wide here, centred, with its button.
+	.mw-contact__form {
+		order: -1;
+		width: 100%;
+		max-width: 58rem;
+		margin-inline: auto;
+		padding-inline: 2rem;
+
+		.mw-cf__submit {
+			text-align: center;
+		}
+	}
+
+	.mw-contact.has-photo .mw-contact__form {
+		padding-bottom: 0;
+	}
+
+	.mw-contact__photo {
+		padding-top: 4.5rem;
+	}
+}
+
+// A narrow screen: the room above the section is 5.5rem.
+@media (max-width: 600px) {
+	body .mw-contact.mw-section {
+		margin-top: 5.5rem;
+	}
+}
+
+// A phone: the card is 4rem from what is above it and runs the full width of
+// the screen, square, down to the next section. What is inside keeps the
+// page's side gutter, which gets smaller on the smallest screens.
+@media (max-width: 500px) {
+	body .mw-contact.mw-section {
+		margin-top: 4rem;
+		margin-bottom: 0;
+		padding-inline: 0;
+	}
+
+	.mw-contact__card {
+		border-radius: 0;
+	}
+
+	.mw-contact .mw-contact__title {
+		padding-inline: var(--wp--custom--gutter);
+	}
+
+	.mw-contact__text,
+	.mw-contact__form,
+	.mw-contact:not(.has-photo) .mw-contact__form,
+	.mw-contact.photo-right .mw-contact__form {
+		padding-inline: var(--wp--custom--gutter);
+	}
+
+	.mw-contact__photo {
+		padding-inline: var(--wp--custom--gutter);
+	}
+}
