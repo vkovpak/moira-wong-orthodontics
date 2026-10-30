@@ -1,0 +1,12 @@
+// The editor's outline (hover and selection, drawn on the block's ::after) also
+// takes in the number that sticks out of the corner. Core's own rules set
+// `top`/`left` with a higher specificity, hence !important.
+.mw-faq-item::after {
+	top: -2.2rem !important;
+	left: -0.8rem !important;
+}
+
+// Fields are single-line editable text; keep their look from the front end.
+.mw-faq-item .rich-text {
+	min-height: 1em;
+}

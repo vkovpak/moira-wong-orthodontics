@@ -1,0 +1,77 @@
+// A heading, numbered question cards and a button under them, on the grey
+// background. The cards sit in rows of 4, 3 or 2 (the block's choice, in
+// has-N-per-row), centred, so a last short row is centred too. When the
+// container is too narrow for that many cards of at least $card-min, the
+// number per row drops by itself. The button is the list's last child on a row
+// of its own, one row gap below the cards.
+$gap-x: 26px;
+$gap-y: 49px;
+$card-min: 240px;
+
+// The container width at which n cards still fit in a row.
+@function fits($n) {
+
+	@return $n * $card-min + ($n - 1) * $gap-x;
+}
+
+.mw-faq {
+	container-type: inline-size;
+	padding-top: 3.5rem;
+	padding-bottom: 5rem;
+	background: var(--wp--preset--color--background);
+}
+
+.mw-faq__title {
+	margin: 0 0 4.6rem;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+}
+
+.mw-faq__list {
+	--mw-cols: 4;
+
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: $gap-y $gap-x;
+	counter-reset: mw-faq;
+
+	.has-3-per-row & {
+		--mw-cols: 3;
+	}
+
+	.has-2-per-row & {
+		--mw-cols: 2;
+	}
+
+	.mw-faq-item {
+		flex: none;
+		width: calc((100% - (var(--mw-cols) - 1) * #{$gap-x}) / var(--mw-cols));
+	}
+
+	.wp-block-buttons {
+		flex: 0 0 100%;
+		justify-content: center;
+		margin: 0;
+	}
+}
+
+@container (max-width: #{fits(4) - 1px}) {
+	.has-4-per-row .mw-faq__list {
+		--mw-cols: 3;
+	}
+}
+
+@container (max-width: #{fits(3) - 1px}) {
+	.has-4-per-row .mw-faq__list,
+	.has-3-per-row .mw-faq__list {
+		--mw-cols: 2;
+	}
+}
+
+@container (max-width: #{fits(2) - 1px}) {
+	.mw-faq .mw-faq__list {
+		--mw-cols: 1;
+	}
+}
