@@ -17,7 +17,9 @@ export default function save( { attributes } ) {
 						<div className="mw-hero__image">
 							<img
 								className={
-									mediaId ? `wp-image-${ mediaId }` : undefined
+									mediaId
+										? `wp-image-${ mediaId }`
+										: undefined
 								}
 								src={ mediaUrl }
 								alt={ mediaAlt }

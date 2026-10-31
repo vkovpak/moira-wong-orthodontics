@@ -4,7 +4,10 @@ import './theme.scss';
 // html.mw-header-transitioning is set only while that flip animates, so the
 // vw-based sizes do not animate on window resizes.
 const root = document.documentElement;
-const TRANSITION_MS = 500;
+// How long the logo card takes to shrink and to grow back (the same numbers as
+// in site-header/style.scss).
+const SHRINK_MS = 350;
+const GROW_MS = 500;
 let isScrolled = false;
 let transitionTimeout;
 
@@ -23,7 +26,10 @@ function updateScrolled() {
 	root.classList.add( 'mw-header-transitioning' );
 	window.clearTimeout( transitionTimeout );
 	// Safety net for when no transition runs (nothing changed size).
-	transitionTimeout = window.setTimeout( stopTransitioning, TRANSITION_MS );
+	transitionTimeout = window.setTimeout(
+		stopTransitioning,
+		scrolled ? SHRINK_MS : GROW_MS
+	);
 }
 
 document

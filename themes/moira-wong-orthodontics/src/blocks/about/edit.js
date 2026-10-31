@@ -3,11 +3,10 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	RichText,
-	MediaUpload,
-	MediaUploadCheck,
+	MediaPlaceholder,
 } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 import PhotoControls from '../../utils/photo-controls';
 
 // Heading and paragraphs are the usual core blocks, so they keep their own
@@ -38,15 +37,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		}`,
 	} );
 
-	const onSelect = ( media ) =>
-		setAttributes( {
-			mediaId: media.id,
-			mediaUrl: media.url,
-			mediaAlt: media.alt || '',
-		} );
-
-	const onRemove = () =>
-		setAttributes( { mediaId: undefined, mediaUrl: '', mediaAlt: '' } );
+	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	const field = ( className, key, placeholder ) => (
 		<RichText
@@ -119,34 +110,19 @@ export default function Edit( { attributes, setAttributes } ) {
 										onRemove={ onRemove }
 									/>
 								) : (
-									<div
-										className="mw-about__empty mw-media-control"
-										tabIndex={ 0 }
-										role="group"
-										aria-label={ __(
-											'Photo',
-											'moira-wong-orthodontics'
-										) }
-									>
-										<div className="mw-media-control__toolbar">
-											<MediaUploadCheck>
-												<MediaUpload
-													onSelect={ onSelect }
-													allowedTypes={ [ 'image' ] }
-													render={ ( { open } ) => (
-														<Button
-															icon={ imageIcon }
-															label={ __(
-																'Photo',
-																'moira-wong-orthodontics'
-															) }
-															onClick={ open }
-														/>
-													) }
-												/>
-											</MediaUploadCheck>
-										</div>
-									</div>
+									<MediaPlaceholder
+										className="mw-photo-placeholder mw-about__placeholder"
+										icon={ imageIcon }
+										labels={ {
+											title: __(
+												'Photo',
+												'moira-wong-orthodontics'
+											),
+										} }
+										allowedTypes={ [ 'image' ] }
+										accept="image/*"
+										onSelect={ onSelect }
+									/>
 								) }
 							</div>
 						</div>

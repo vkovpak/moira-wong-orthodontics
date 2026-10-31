@@ -83,6 +83,15 @@
 	}
 }
 
+// The colours of an empty image slot: darker than any background of the site
+// (white, cream, the grey of the FAQ, yellow), so the slot does not merge with
+// the section it is in.
+:root {
+	--mw-empty-bg: #e8e8e8;
+	--mw-empty-icon: #b1b1b1;
+	--mw-empty-label: #949494;
+}
+
 // Empty state of every image slot: grey box with a light outline, muted label
 // and instructions, white secondary buttons. The pointer is the plain arrow:
 // the editor's grab cursor would suggest the box can be dragged.
@@ -93,15 +102,14 @@
 
 .components-placeholder.components-placeholder {
 	justify-content: center;
-	background: var(--wp--preset--color--background);
+	background: var(--mw-empty-bg);
 	box-shadow: inset 0 0 0 1px var(--wp--preset--color--grey-light);
 
 	.components-placeholder__label {
-		// Between the two greys of the palette; used only here.
-		color: #b5b5b5;
+		color: var(--mw-empty-label);
 
 		svg {
-			fill: var(--wp--preset--color--grey-light);
+			fill: var(--mw-empty-icon);
 		}
 	}
 

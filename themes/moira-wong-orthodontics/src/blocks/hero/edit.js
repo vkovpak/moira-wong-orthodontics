@@ -5,6 +5,7 @@ import {
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 import PhotoControls from '../../utils/photo-controls';
 
 // Heading, text and button are the usual core blocks, so they keep their own
@@ -43,15 +44,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const blockProps = useBlockProps( { className: 'mw-hero mw-section' } );
 
-	const onSelect = ( media ) =>
-		setAttributes( {
-			mediaId: media.id,
-			mediaUrl: media.url,
-			mediaAlt: media.alt || '',
-		} );
-
-	const onRemove = () =>
-		setAttributes( { mediaId: undefined, mediaUrl: '', mediaAlt: '' } );
+	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
 		<>

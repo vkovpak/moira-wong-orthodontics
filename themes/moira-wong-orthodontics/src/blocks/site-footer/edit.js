@@ -5,10 +5,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 const LOCK = { move: true, remove: true };
 
 const TEMPLATE = [
-	[
-		'core/site-logo',
-		{ width: 280, className: 'mw-footer__logo', lock: LOCK },
-	],
+	[ 'core/site-logo', { className: 'mw-footer__logo', lock: LOCK } ],
 	[
 		'mw/footer-text',
 		{ className: 'mw-footer__address', hasIcon: true, lock: LOCK },

@@ -18,8 +18,8 @@ const TEMPLATE = [
 	[ 'core/list', { ordered: true }, [ [ 'core/list-item' ] ] ],
 ];
 
-registerBlockType( metadata.name, {
-	edit: () => (
+function Edit() {
+	return (
 		<div { ...useBlockProps( { className: 'mw-appt-box' } ) }>
 			<InnerBlocks
 				template={ TEMPLATE }
@@ -27,10 +27,15 @@ registerBlockType( metadata.name, {
 				templateLock={ false }
 			/>
 		</div>
-	),
-	save: () => (
+	);
+}
+
+function save() {
+	return (
 		<div { ...useBlockProps.save( { className: 'mw-appt-box' } ) }>
 			<InnerBlocks.Content />
 		</div>
-	),
-} );
+	);
+}
+
+registerBlockType( metadata.name, { edit: Edit, save } );

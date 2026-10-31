@@ -198,11 +198,6 @@ body .mw-contact.mw-section {
 		}
 	}
 
-	.wpcf7-acceptance a {
-		font-weight: 700;
-		text-decoration: underline;
-	}
-
 	.mw-cf__submit {
 		text-align: right;
 	}
@@ -308,19 +303,11 @@ body .mw-contact.mw-section {
 	}
 }
 
-// A narrow screen: the room above the section is 5.5rem.
-@media (max-width: 600px) {
+// A tablet and below: the card runs the full width of the screen, square, down
+// to the next section. What is inside keeps the page's side gutter, which gets
+// smaller on the smallest screens.
+@media (max-width: 700px) {
 	body .mw-contact.mw-section {
-		margin-top: 5.5rem;
-	}
-}
-
-// A phone: the card is 4rem from what is above it and runs the full width of
-// the screen, square, down to the next section. What is inside keeps the
-// page's side gutter, which gets smaller on the smallest screens.
-@media (max-width: 500px) {
-	body .mw-contact.mw-section {
-		margin-top: 4rem;
 		margin-bottom: 0;
 		padding-inline: 0;
 	}
@@ -342,5 +329,19 @@ body .mw-contact.mw-section {
 
 	.mw-contact__photo {
 		padding-inline: var(--wp--custom--gutter);
+	}
+}
+
+// A narrow screen: the room above the section is 5.5rem.
+@media (max-width: 600px) {
+	body .mw-contact.mw-section {
+		margin-top: 5.5rem;
+	}
+}
+
+// A phone: the room above the section is 4rem.
+@media (max-width: 500px) {
+	body .mw-contact.mw-section {
+		margin-top: 4rem;
 	}
 }

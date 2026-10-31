@@ -50,31 +50,6 @@ function mw_enqueue_theme_assets() {
 add_action( 'wp_enqueue_scripts', 'mw_enqueue_theme_assets' );
 
 /**
- * Caps the Site Logo at the uploaded file's own width (and at its container, via 100%), so a width chosen in the
- * editor can shrink the logo but never upscale it.
- */
-function mw_cap_site_logo_width( $block_content ) {
-	$logo_id = (int) get_option( 'site_logo' );
-	$meta    = $logo_id ? wp_get_attachment_metadata( $logo_id ) : false;
-
-	if ( empty( $meta['width'] ) ) {
-		return $block_content;
-	}
-
-	$processor = new WP_HTML_Tag_Processor( $block_content );
-
-	if ( $processor->next_tag( 'img' ) ) {
-		$style = rtrim( (string) $processor->get_attribute( 'style' ), '; ' );
-		$cap   = 'max-width:min(100%,' . (int) $meta['width'] . 'px)';
-
-		$processor->set_attribute( 'style', '' === $style ? $cap : $style . ';' . $cap );
-	}
-
-	return $processor->get_updated_html();
-}
-add_filter( 'render_block_core/site-logo', 'mw_cap_site_logo_width' );
-
-/**
  * Groups all mw/* blocks together in the inserter.
  */
 function mw_block_categories( $categories ) {

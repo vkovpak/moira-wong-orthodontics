@@ -18,6 +18,5 @@
 		"inserter": false,
 		"reusable": false
 	},
-	"editorScript": "file:./index.js",
-	"render": "file:./render.php"
+	"editorScript": "file:./index.js"
 }

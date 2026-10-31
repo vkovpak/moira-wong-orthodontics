@@ -9,7 +9,10 @@ const TEMPLATE = [
 			[
 				'core/button',
 				{
-					text: __( 'Enquire about a consultation', 'moira-wong-orthodontics' ),
+					text: __(
+						'Enquire about a consultation',
+						'moira-wong-orthodontics'
+					),
 				},
 			],
 		],

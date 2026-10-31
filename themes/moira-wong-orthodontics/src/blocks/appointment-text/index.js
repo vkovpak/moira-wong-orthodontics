@@ -12,8 +12,8 @@ const TEMPLATE = [
 	],
 ];
 
-registerBlockType( metadata.name, {
-	edit: () => (
+function Edit() {
+	return (
 		<div { ...useBlockProps( { className: 'mw-appt__text' } ) }>
 			<InnerBlocks
 				template={ TEMPLATE }
@@ -21,10 +21,15 @@ registerBlockType( metadata.name, {
 				templateLock={ false }
 			/>
 		</div>
-	),
-	save: () => (
+	);
+}
+
+function save() {
+	return (
 		<div { ...useBlockProps.save( { className: 'mw-appt__text' } ) }>
 			<InnerBlocks.Content />
 		</div>
-	),
-} );
+	);
+}
+
+registerBlockType( metadata.name, { edit: Edit, save } );

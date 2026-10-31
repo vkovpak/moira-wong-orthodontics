@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 
 // What the field accepts: the usual WYSIWYG content. The paragraph / heading /
 // list blocks bring bold, italic, links, line breaks and nested lists with them.
@@ -23,15 +24,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		className: `mw-footer-text${ hasIcon ? ' has-icon' : '' }`,
 	} );
 
-	const onSelectIcon = ( media ) =>
-		setAttributes( {
-			iconId: media.id,
-			iconUrl: media.url,
-			iconAlt: media.alt || '',
-		} );
-
-	const onRemoveIcon = () =>
-		setAttributes( { iconId: undefined, iconUrl: '', iconAlt: '' } );
+	const { onSelect: onSelectIcon, onRemove: onRemoveIcon } =
+		usePhotoAttributes( setAttributes, 'icon' );
 
 	return (
 		<>

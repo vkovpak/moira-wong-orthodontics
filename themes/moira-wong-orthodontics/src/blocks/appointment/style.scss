@@ -208,21 +208,18 @@ body .mw-appt.mw-section {
 	}
 }
 
-// A narrow screen: the room below the section is 5.5rem.
-@media (max-width: 600px) {
+// A tablet and below: the box goes under the text and runs the full width of
+// the screen, square; the footnote is centred. The section has no side
+// padding then, so the heading, the text, the footnote, the photo and the box's
+// own contents keep the gutter themselves, which gets smaller on the smallest
+// screens.
+@media (max-width: 700px) {
 	body .mw-appt.mw-section {
-		margin-bottom: 5.5rem;
-	}
-}
-
-// A phone: the section ends 4rem above what follows, and the box runs the full
-// width of the screen, square. The section has no side padding then, so the
-// heading, the text, the footnote, the photo and the box's own contents keep
-// the gutter themselves, which gets smaller on the smallest screens.
-@media (max-width: 500px) {
-	body .mw-appt.mw-section {
-		margin-bottom: 4rem;
 		padding-inline: 0;
+	}
+
+	.mw-appt.has-photo .mw-appt__body {
+		flex-basis: 100%;
 	}
 
 	.mw-appt .mw-appt__title,
@@ -237,8 +234,33 @@ body .mw-appt.mw-section {
 		padding-inline: var(--wp--custom--gutter);
 	}
 
+	.mw-appt__text {
+		flex-basis: 100%;
+		margin-top: 0;
+	}
+
+	// The footnote is centred whatever alignment was chosen for it.
+	.mw-appt .mw-appt__footnote.mw-appt__footnote {
+		text-align: center;
+	}
+
 	.mw-appt-box {
+		flex-basis: 100%;
 		padding-inline: var(--wp--custom--gutter);
 		border-radius: 0;
+	}
+}
+
+// A narrow screen: the room below the section is 5.5rem.
+@media (max-width: 600px) {
+	body .mw-appt.mw-section {
+		margin-bottom: 5.5rem;
+	}
+}
+
+// A phone: the section ends 4rem above what follows.
+@media (max-width: 500px) {
+	body .mw-appt.mw-section {
+		margin-bottom: 4rem;
 	}
 }

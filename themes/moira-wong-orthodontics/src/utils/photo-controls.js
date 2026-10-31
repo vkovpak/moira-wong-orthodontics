@@ -10,6 +10,7 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import usePhotoAttributes from './use-photo-attributes';
 
 // Controls shared by the blocks whose photo is optional: a "Photo" menu in the
 // block toolbar (replace or remove the picture) and a "Has photo" switch in the
@@ -22,6 +23,7 @@ export default function PhotoControls( {
 	withPosition = false,
 } ) {
 	const { hasPhoto, mediaId, mediaUrl, photoPosition } = attributes;
+	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
 		<>
@@ -32,20 +34,8 @@ export default function PhotoControls( {
 						mediaURL={ mediaUrl }
 						allowedTypes={ [ 'image' ] }
 						accept="image/*"
-						onSelect={ ( media ) =>
-							setAttributes( {
-								mediaId: media.id,
-								mediaUrl: media.url,
-								mediaAlt: media.alt || '',
-							} )
-						}
-						onReset={ () =>
-							setAttributes( {
-								mediaId: undefined,
-								mediaUrl: '',
-								mediaAlt: '',
-							} )
-						}
+						onSelect={ onSelect }
+						onReset={ onRemove }
 						name={ `${ __( 'Photo', 'moira-wong-orthodontics' ) } ▾` }
 					/>
 				) }

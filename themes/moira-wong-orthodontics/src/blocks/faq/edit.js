@@ -105,11 +105,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	);
 	const { insertBlock } = useDispatch( blockEditorStore );
 	const addQuestion = () =>
-		insertBlock(
-			createBlock( 'mw/faq-item' ),
-			lastQuestion + 1,
-			clientId
-		);
+		insertBlock( createBlock( 'mw/faq-item' ), lastQuestion + 1, clientId );
 
 	return (
 		<>
@@ -134,7 +130,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<ToolbarButton
 						icon={ plusIcon }
 						text={ __( 'Add question', 'moira-wong-orthodontics' ) }
-						label={ __( 'Add question', 'moira-wong-orthodontics' ) }
+						label={ __(
+							'Add question',
+							'moira-wong-orthodontics'
+						) }
 						onClick={ addQuestion }
 					/>
 				</ToolbarGroup>

@@ -1,20 +1,41 @@
-// An empty photo slot: a grey outlined box 410px high under the bubble, with
-// the toolbar always showing (a filled slot shows it on hover only).
-.mw-about .mw-about__empty {
-	width: 321px;
-	height: 410px;
-	max-width: 100%;
-	background: var(--wp--preset--color--background);
-	border-radius: 5px 5px 0 0;
-	box-shadow: inset 0 0 0 1px var(--wp--preset--color--grey-light);
+// An empty photo slot: the picture's size, 410px high, under the bubble. The
+// bubble covers 98px of it (its 258px less the 160px it is moved out), so the
+// compact form (the label and the two buttons one under the other) is centred
+// in the part that is free: between the bubble and the edge of the photo, 5px
+// further from the bubble than the exact middle.
+$bubble-over: 98px;
 
-	.mw-media-control__toolbar {
-		opacity: 1;
+.mw-about .mw-photo-placeholder.mw-about__placeholder.components-placeholder.components-placeholder {
+	box-sizing: border-box;
+	width: 321px;
+	max-width: 100%;
+	height: 410px;
+	padding-inline: ($bubble-over + 10px) 0;
+	border-radius: 5px 5px 0 0;
+	justify-content: center;
+
+	.components-placeholder__instructions {
+		display: none;
+	}
+
+	.components-placeholder__fieldset {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.8rem;
+	}
+
+	.components-button {
+		width: 100%;
+		justify-content: center;
 	}
 }
 
+.mw-about.photo-left .mw-photo-placeholder.mw-about__placeholder.components-placeholder.components-placeholder {
+	padding-inline: 10px $bubble-over;
+}
+
 // With no picture yet the bubble sits 10px from the top of the grey box.
-.mw-about__figure:has(.mw-about__empty) .mw-about__bubble {
+.mw-about__figure:has(.mw-about__placeholder) .mw-about__bubble {
 	top: 10px;
 	z-index: 1;
 }

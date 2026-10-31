@@ -8,6 +8,7 @@ import {
 } from '@wordpress/block-editor';
 import { PanelBody, TextControl } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 import PhotoControls from '../../utils/photo-controls';
 
 // What can be written above the form: the usual core blocks.
@@ -89,15 +90,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		}`,
 	} );
 
-	const onSelect = ( media ) =>
-		setAttributes( {
-			mediaId: media.id,
-			mediaUrl: media.url,
-			mediaAlt: media.alt || '',
-		} );
-
-	const onRemove = () =>
-		setAttributes( { mediaId: undefined, mediaUrl: '', mediaAlt: '' } );
+	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
 		<>

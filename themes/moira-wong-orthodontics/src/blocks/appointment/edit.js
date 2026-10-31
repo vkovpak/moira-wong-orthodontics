@@ -6,6 +6,7 @@ import {
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 import PhotoControls from '../../utils/photo-controls';
 
 // The two columns are blocks of their own, each with its own content, and the
@@ -33,15 +34,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		}`,
 	} );
 
-	const onSelect = ( media ) =>
-		setAttributes( {
-			mediaId: media.id,
-			mediaUrl: media.url,
-			mediaAlt: media.alt || '',
-		} );
-
-	const onRemove = () =>
-		setAttributes( { mediaId: undefined, mediaUrl: '', mediaAlt: '' } );
+	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
 		<>

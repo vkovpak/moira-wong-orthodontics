@@ -1,7 +1,9 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 const Photo = ( { kind, id, url, alt } ) => (
-	<span className={ `mw-testimonial__photo mw-testimonial__photo--${ kind }` }>
+	<span
+		className={ `mw-testimonial__photo mw-testimonial__photo--${ kind }` }
+	>
 		<img
 			className={ id ? `wp-image-${ id }` : undefined }
 			src={ url }

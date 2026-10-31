@@ -7,6 +7,7 @@ import {
 } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import usePhotoAttributes from '../../utils/use-photo-attributes';
 
 const QUOTE_FORMATS = [ 'core/bold', 'core/italic' ];
 const TEXT_FORMATS = [ 'core/bold', 'core/italic', 'core/link' ];
@@ -74,19 +75,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		className: 'mw-testimonial has-photos',
 	} );
 
-	const select = ( key ) => ( media ) =>
-		setAttributes( {
-			[ `${ key }Id` ]: media.id,
-			[ `${ key }Url` ]: media.url,
-			[ `${ key }Alt` ]: media.alt || '',
-		} );
-
-	const remove = ( key ) => () =>
-		setAttributes( {
-			[ `${ key }Id` ]: undefined,
-			[ `${ key }Url` ]: '',
-			[ `${ key }Alt` ]: '',
-		} );
+	const after = usePhotoAttributes( setAttributes, 'after' );
+	const before = usePhotoAttributes( setAttributes, 'before' );
 
 	return (
 		<article { ...blockProps }>
@@ -97,8 +87,8 @@ export default function Edit( { attributes, setAttributes } ) {
 					id={ afterId }
 					url={ afterUrl }
 					alt={ afterAlt }
-					onSelect={ select( 'after' ) }
-					onRemove={ remove( 'after' ) }
+					onSelect={ after.onSelect }
+					onRemove={ after.onRemove }
 				/>
 				<PhotoSlot
 					kind="before"
@@ -106,8 +96,8 @@ export default function Edit( { attributes, setAttributes } ) {
 					id={ beforeId }
 					url={ beforeUrl }
 					alt={ beforeAlt }
-					onSelect={ select( 'before' ) }
-					onRemove={ remove( 'before' ) }
+					onSelect={ before.onSelect }
+					onRemove={ before.onRemove }
 				/>
 			</div>
 			<div className="mw-testimonial__head">
@@ -125,7 +115,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					className="mw-testimonial__name"
 					value={ name }
 					onChange={ ( value ) => setAttributes( { name: value } ) }
-					placeholder={ __( 'Who said it', 'moira-wong-orthodontics' ) }
+					placeholder={ __(
+						'Who said it',
+						'moira-wong-orthodontics'
+					) }
 					allowedFormats={ QUOTE_FORMATS }
 				/>
 			</div>
