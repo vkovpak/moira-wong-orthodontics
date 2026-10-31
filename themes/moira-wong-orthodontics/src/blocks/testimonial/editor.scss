@@ -3,7 +3,7 @@
 .mw-testimonial__photo .mw-testimonial__empty {
 	width: 100%;
 	height: 100%;
-	background: var(--mw-empty-bg);
+	background: var(--mw-empty-pattern), var(--mw-empty-bg);
 
 	.mw-media-control__toolbar {
 		opacity: 1;

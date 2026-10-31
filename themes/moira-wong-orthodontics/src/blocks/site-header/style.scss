@@ -1,5 +1,20 @@
+@use "sass:math";
+@use "../../utils/pointer";
+
 // The handset of a phone link (see the phones rule at the end).
 $tel-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='10.23 10.23 79.54 79.54'%3E%3Cpath fill-rule='evenodd' d='M10.301 31.875c-1.0781-8.7383 10.766-26.379 17.695-20.453 2.2148 1.8945 11.707 17.922 12.07 19.871.83203 4.4336-3.5586 8.6797-6.8906 13.574-4.3516 6.3984 15.555 26.305 21.953 21.953 4.8945-3.332 9.1406-7.7227 13.574-6.8906 1.9531.36719 17.98 9.8594 19.871 12.07 5.9258 6.9297-11.715 18.777-20.453 17.699-27.883-3.4375-54.383-29.938-57.82-57.824z'/%3E%3C/svg%3E");
+
+// Where the hero's ring (mw/hero) meets the bottom of the header bar when the
+// ring is in the middle of the page: the ring is 558px across, its top 44px
+// above the page (the hero is pulled 90px up under the 46px bar), so at the
+// bar's bottom edge its left side is this far left of the page's centre.
+$ring-r: 279px;
+$bar-h: 46px;
+$ring-top: $bar-h - 90px;
+$ring-dy: $bar-h - ($ring-top + $ring-r);
+$ring-reach: math.sqrt(math.div($ring-r * $ring-r - $ring-dy * $ring-dy, 1px * 1px)) * 1px;
+// The card goes this far past that point, over the ring.
+$ring-overlap: 10px;
 
 // White top bar with the logo card hanging over the first section.
 
@@ -13,6 +28,8 @@ $tel-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 
 	&__inner {
+		// The container the logo card's extra width is measured against (below).
+		container-type: inline-size;
 		position: relative;
 		display: flex;
 		align-items: center;
@@ -76,6 +93,8 @@ $tel-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 		--mw-logo-w: clamp(160px, 30vw, 338px);
 
 		width: fit-content;
+		// A number, not auto, so that the extra width below can animate.
+		min-width: 0;
 		max-width: 100%;
 		margin: 0;
 		background: var(--wp--preset--color--base);
@@ -93,7 +112,7 @@ $tel-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 			padding: calc(var(--mw-logo-w) * 0.06);
 			transition: filter 0.1s ease-out;
 
-			&:hover {
+			@include pointer.on-hover {
 				filter: brightness(1.1);
 			}
 		}
@@ -114,21 +133,44 @@ $tel-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 	}
 }
 
+// With the hero's ring in the middle the full card does not reach it: there is
+// a gap between the card and the ring. The hero puts the ring there when its
+// content is narrower than its text and the ring side by side (600px + 558px,
+// see hero/style.scss); the header's content is as wide as the hero's, so the
+// same width decides here. Until the page is scrolled the card is then widened,
+// on its right, to the ring's edge and a little over it (the logo stays in the
+// middle of the card); the percentage is the width of the header's content.
+// Where the full card is wide enough anyway, nothing is added, and the extra
+// width shrinks along with the window.
+@container (max-width: #{600px + 558px - 0.1px}) {
+	html:not(.mw-scrolled) body:has(.mw-hero) .mw-header__logo {
+		min-width: calc(50% - #{$ring-reach} + #{$ring-overlap});
+	}
+}
+
 // Animated only for the scroll flip itself (html.mw-header-transitioning is set
 // for that moment): the widths are vw-based, so an always-on transition would
 // also animate every window resize.
-html.mw-header-transitioning .mw-header__inner .mw-header__logo a {
-	transition:
-		width 0.5s ease-out,
-		padding 0.5s ease-out;
+html.mw-header-transitioning .mw-header__inner .mw-header__logo {
+	transition: min-width 0.5s ease-out;
+
+	a {
+		transition:
+			width 0.5s ease-out,
+			padding 0.5s ease-out;
+	}
 }
 
 // The card shrinks (the page has just been scrolled) a little faster than it
 // grows back.
-html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo a {
-	transition:
-		width 0.35s ease-out,
-		padding 0.35s ease-out;
+html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo {
+	transition: min-width 0.35s ease-out;
+
+	a {
+		transition:
+			width 0.35s ease-out,
+			padding 0.35s ease-out;
+	}
 }
 
 @media (max-width: 781px) {
@@ -168,8 +210,10 @@ html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo a {
 		font-size: 0;
 		line-height: 0;
 
-		&:not(:hover) {
-			color: rgba(37, 47, 55, 0.8);
+		color: rgba(37, 47, 55, 0.8);
+
+		@include pointer.on-hover {
+			color: var(--wp--preset--color--link-hover);
 		}
 
 		&::before {

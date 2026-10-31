@@ -38,3 +38,7 @@ document
 
 updateScrolled();
 window.addEventListener( 'scroll', updateScrolled, { passive: true } );
+
+// iOS Safari shows :active (the touch feedback of the hover effects, see
+// utils/_pointer.scss) only when a touch listener is on the page.
+document.addEventListener( 'touchstart', () => {}, { passive: true } );

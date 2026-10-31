@@ -176,3 +176,25 @@ function mw_local_mail_to_mailpit( $phpmailer ) {
 if ( 'local' === wp_get_environment_type() ) {
 	add_action( 'phpmailer_init', 'mw_local_mail_to_mailpit' );
 }
+
+/**
+ * Local setup only: when the site is opened by another address than localhost (for example a phone on the same
+ * Wi-Fi opening http://192.168.0.102), the absolute http://localhost addresses saved in the content are pointed at the
+ * address in use, so that pictures and files load there too.
+ */
+function mw_local_host_urls() {
+	$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+
+	if ( '' === $host || 'localhost' === $host ) {
+		return;
+	}
+
+	ob_start(
+		function ( $html ) use ( $host ) {
+			return str_replace( array( 'http://localhost', 'http:\/\/localhost' ), array( 'http://' . $host, 'http:\/\/' . $host ), $html );
+		}
+	);
+}
+if ( 'local' === wp_get_environment_type() ) {
+	add_action( 'template_redirect', 'mw_local_host_urls', 0 );
+}

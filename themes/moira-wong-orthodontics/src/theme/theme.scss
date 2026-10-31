@@ -1,3 +1,5 @@
+@use "../utils/pointer";
+
 // Theme-wide styles: layout, footer, utilities.
 // Section styles live next to their blocks in src/blocks.
 
@@ -97,16 +99,30 @@ a {
 }
 
 // Yellow (default) button: dark with white text on hover, like the dark one.
-.wp-block-button:not([class*="is-style-"]) .wp-block-button__link:hover {
-	background-color: var(--wp--preset--color--contrast);
-	color: var(--wp--preset--color--base);
+.wp-block-button:not([class*="is-style-"]) .wp-block-button__link {
+
+	@include pointer.on-hover {
+		background-color: var(--wp--preset--color--contrast);
+		color: var(--wp--preset--color--base);
+	}
 }
 
 // Dark button: white with dark text on hover. Written here because WordPress
 // does not output :hover for block style variations from styles/*.json.
-.wp-block-button.is-style-button-dark .wp-block-button__link:hover {
-	background-color: var(--wp--preset--color--base);
-	color: var(--wp--preset--color--contrast);
+.wp-block-button.is-style-button-dark .wp-block-button__link {
+
+	@include pointer.on-hover {
+		background-color: var(--wp--preset--color--base);
+		color: var(--wp--preset--color--contrast);
+	}
+}
+
+// Links in the text turn brown on hover (the buttons have their own effect).
+a:not(.wp-element-button) {
+
+	@include pointer.on-hover {
+		color: var(--wp--preset--color--link-hover);
+	}
 }
 
 // Footer stays at the bottom of the viewport when the content is short.

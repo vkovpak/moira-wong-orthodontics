@@ -11,9 +11,18 @@
 	padding-top: var(--mw-hero-cut);
 	border-radius: 50%;
 	clip-path: inset(var(--mw-hero-cut) 0 0);
+	// The flat line along the cut, the chessboard, the grey.
+	background-image:
+		linear-gradient(var(--mw-line), var(--mw-line)),
+		conic-gradient(var(--mw-empty-check) 25%, transparent 0 50%, var(--mw-empty-check) 0 75%, transparent 0);
 	background-color: var(--mw-empty-bg);
-	background-image: linear-gradient(var(--mw-line), var(--mw-line));
-	background-position: 0 var(--mw-hero-cut);
-	background-size: 100% 1px;
-	background-repeat: no-repeat;
+	background-position:
+		0 var(--mw-hero-cut),
+		0 0;
+	background-size:
+		100% 1px,
+		var(--mw-empty-tile) var(--mw-empty-tile);
+	background-repeat:
+		no-repeat,
+		repeat;
 }

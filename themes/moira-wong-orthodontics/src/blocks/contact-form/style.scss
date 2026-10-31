@@ -1,3 +1,5 @@
+@use "../../utils/pointer";
+
 // One rounded card: a band with the heading on top, the text, then the photo
 // in the bottom left corner and the form beside it. The form's column is a
 // fixed 64rem; the photo zone is what is left of the row (56rem at the full
@@ -210,9 +212,12 @@ body .mw-contact.mw-section {
 	}
 
 	// The same hover as the yellow buttons of the blocks (theme.scss).
-	.wpcf7-submit:hover {
-		background-color: var(--wp--preset--color--contrast);
-		color: var(--wp--preset--color--base);
+	.wpcf7-submit {
+
+		@include pointer.on-hover {
+			background-color: var(--wp--preset--color--contrast);
+			color: var(--wp--preset--color--base);
+		}
 	}
 
 	.wpcf7-not-valid-tip {
@@ -303,10 +308,10 @@ body .mw-contact.mw-section {
 	}
 }
 
-// A tablet and below: the card runs the full width of the screen, square, down
-// to the next section. What is inside keeps the page's side gutter, which gets
+// From 830px down: the card runs the full width of the screen, square, down to
+// the next section. What is inside keeps the page's side gutter, which gets
 // smaller on the smallest screens.
-@media (max-width: 700px) {
+@media (max-width: 830px) {
 	body .mw-contact.mw-section {
 		margin-bottom: 0;
 		padding-inline: 0;

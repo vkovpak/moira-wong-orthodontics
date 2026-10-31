@@ -26,8 +26,9 @@ services:
       WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX:-wp_}
       WORDPRESS_DEBUG: ${WP_DEBUG:-1}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', '${WP_HOME:-http://localhost}');
-        define('WP_SITEURL', '${WP_HOME:-http://localhost}');
+        $$mw_host = isset($$_SERVER['HTTP_HOST']) ? $$_SERVER['HTTP_HOST'] : parse_url('${WP_HOME:-http://localhost}', PHP_URL_HOST);
+        define('WP_HOME', 'http://' . $$mw_host);
+        define('WP_SITEURL', 'http://' . $$mw_host);
         define('WP_MEMORY_LIMIT', '512M');
         define('WP_MAX_MEMORY_LIMIT', '512M');
         define('WP_ENVIRONMENT_TYPE', 'local');

@@ -1,0 +1,17 @@
+// A hover effect that does not stick on a touch screen. With a mouse it shows
+// on :hover. With a finger (no hover) it shows only while the element is being
+// touched (:active), because a tap leaves :hover on until the next tap.
+@mixin on-hover {
+
+	@media (hover: hover) {
+		&:hover {
+			@content;
+		}
+	}
+
+	@media (hover: none) {
+		&:active {
+			@content;
+		}
+	}
+}
