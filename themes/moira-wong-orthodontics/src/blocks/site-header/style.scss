@@ -88,9 +88,13 @@ $ring-overlap: 10px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		// 30vw between 160px and 338px: the full card from 1125px up. The card
-		// is as wide as its link, which carries the width (see below).
-		--mw-logo-w: clamp(160px, 30vw, 338px);
+		// The card is sized by the height of the picture, whatever its
+		// proportions: --mw-logo-h is that height (5.8vw between 40px and 65px,
+		// the full card from 1121px up), the padding is a share of it, and the
+		// width follows from the picture's own proportions.
+		--mw-logo-h: clamp(40px, 5.8vw, 65px);
+		--mw-logo-pad-y: calc(var(--mw-logo-h) * 0.312);
+		--mw-logo-pad-x: calc(var(--mw-logo-h) * 0.415);
 
 		width: fit-content;
 		// A number, not auto, so that the extra width below can animate.
@@ -100,16 +104,14 @@ $ring-overlap: 10px;
 		background: var(--wp--preset--color--base);
 		border-radius: 0 0 4px 4px;
 
-		// The width and the padding (6% of the width, worked out in pixels) are
-		// both on the link, so that when the card changes size they animate in
-		// one element, on one curve.
+		// The padding is on the link and the height on the picture, so that when
+		// the card changes size they animate together, on one curve.
 		a {
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
-			width: var(--mw-logo-w);
 			max-width: 100%;
-			padding: calc(var(--mw-logo-w) * 0.06);
+			padding: var(--mw-logo-pad-y) var(--mw-logo-pad-x);
 			transition: filter 0.1s ease-out;
 
 			@include pointer.on-hover {
@@ -118,18 +120,22 @@ $ring-overlap: 10px;
 		}
 
 		// Core pins the image to the width chosen for it (120px by default); the
-		// card sets the size instead, so the image is shown at its natural size,
-		// at most as wide as the link's content.
+		// card sets the size instead: the height is fixed, the width follows, and
+		// a very wide picture is fitted into the card instead of stretched.
 		.custom-logo-link img {
 			width: auto !important;
+			max-width: 100%;
+			height: var(--mw-logo-h);
+			object-fit: contain;
 		}
 	}
 }
 
 @media (min-width: 701px) {
-	html.mw-scrolled .mw-header__inner .mw-header__logo a {
-		width: 160px;
-		padding: calc(160px * 0.04);
+	html.mw-scrolled .mw-header__inner .mw-header__logo {
+		--mw-logo-h: 33.7px;
+		--mw-logo-pad-y: 6.4px;
+		--mw-logo-pad-x: 6.4px;
 	}
 }
 
@@ -149,15 +155,17 @@ $ring-overlap: 10px;
 }
 
 // Animated only for the scroll flip itself (html.mw-header-transitioning is set
-// for that moment): the widths are vw-based, so an always-on transition would
+// for that moment): the sizes are vw-based, so an always-on transition would
 // also animate every window resize.
 html.mw-header-transitioning .mw-header__inner .mw-header__logo {
 	transition: min-width 0.5s ease-out;
 
 	a {
-		transition:
-			width 0.5s ease-out,
-			padding 0.5s ease-out;
+		transition: padding 0.5s ease-out;
+	}
+
+	.custom-logo-link img {
+		transition: height 0.5s ease-out;
 	}
 }
 
@@ -167,9 +175,11 @@ html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo {
 	transition: min-width 0.35s ease-out;
 
 	a {
-		transition:
-			width 0.35s ease-out,
-			padding 0.35s ease-out;
+		transition: padding 0.35s ease-out;
+	}
+
+	.custom-logo-link img {
+		transition: height 0.35s ease-out;
 	}
 }
 
@@ -186,12 +196,20 @@ html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo {
 	}
 }
 
-// Compact logo card on tablets and phones (above 700px it is only compact once
-// the page is scrolled, see html.mw-scrolled above).
+// Compact logo on tablets and phones (above 700px it is a card only until the
+// page is scrolled, see html.mw-scrolled above): it sits on the header's own
+// background, with no card edge and no room below it.
 @media (max-width: 700px) {
-	.mw-header__inner .mw-header__logo a {
-		width: 150px;
-		padding: 6px 0;
+	.mw-header__inner .mw-header__logo {
+		--mw-logo-h: 34.3px;
+		--mw-logo-pad-y: 6px;
+		--mw-logo-pad-x: 0px;
+
+		background: none;
+
+		a {
+			padding-bottom: 0;
+		}
 	}
 }
 
@@ -211,9 +229,15 @@ html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo {
 		line-height: 0;
 
 		color: rgba(37, 47, 55, 0.8);
+		transition:
+			background-color 0.1s ease-out,
+			color 0.1s ease-out;
 
+		// The ring fills with amber while the icon is touched (or hovered): the
+		// icon alone is too small to show the press.
 		@include pointer.on-hover {
-			color: var(--wp--preset--color--link-hover);
+			background-color: var(--wp--preset--color--amber);
+			color: var(--wp--preset--color--contrast);
 		}
 
 		&::before {

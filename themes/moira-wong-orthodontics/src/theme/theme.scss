@@ -84,6 +84,12 @@ a {
 	transition: color 0.1s ease-out, background-color 0.1s ease-out;
 }
 
+// The text of a button is not selected by a double click or a drag; in the
+// editor, while its text is being edited, it can be.
+.wp-element-button:not([contenteditable="true"]) {
+	user-select: none;
+}
+
 // Smaller button text on phones. The doubled class outranks the font size that
 // theme.json prints for the button element.
 @media (max-width: 600px) {
@@ -115,6 +121,14 @@ a {
 		background-color: var(--wp--preset--color--base);
 		color: var(--wp--preset--color--contrast);
 	}
+}
+
+// A link in a paragraph moves to the next line as a whole instead of breaking
+// across two; one longer than the line still wraps inside its own box.
+p a {
+	display: inline-block;
+	max-width: 100%;
+	vertical-align: baseline;
 }
 
 // Links in the text turn brown on hover (the buttons have their own effect).

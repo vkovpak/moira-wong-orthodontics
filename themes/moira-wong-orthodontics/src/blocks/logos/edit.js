@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import {
 	useBlockProps,
@@ -12,6 +12,7 @@ import {
 import {
 	PanelBody,
 	RangeControl,
+	TextControl,
 	ToggleControl,
 	ToolbarGroup,
 	ToolbarButton,
@@ -51,6 +52,12 @@ export default function Edit( { attributes, setAttributes } ) {
 	const updateImage = ( index, media ) => {
 		const next = [ ...images ];
 		next[ index ] = toImage( media );
+		setAttributes( { images: next } );
+	};
+
+	const updateAlt = ( index, alt ) => {
+		const next = [ ...images ];
+		next[ index ] = { ...next[ index ], alt };
 		setAttributes( { images: next } );
 	};
 
@@ -123,6 +130,68 @@ export default function Edit( { attributes, setAttributes } ) {
 						__next40pxDefaultSize
 					/>
 				</PanelBody>
+				{ images.length > 0 && (
+					<PanelBody
+						title={ __( 'Alt text', 'moira-wong-orthodontics' ) }
+						initialOpen
+					>
+						<p
+							style={ {
+								margin: '0 0 12px',
+								color: '#757575',
+								fontSize: '12px',
+								lineHeight: '18px',
+							} }
+						>
+							{ __(
+								'Name the organisation each logo shows.',
+								'moira-wong-orthodontics'
+							) }
+						</p>
+						{ images.map( ( image, index ) => (
+							<div
+								key={ image.id ?? index }
+								style={ {
+									display: 'flex',
+									alignItems: 'center',
+									gap: '8px',
+									marginBottom: '8px',
+								} }
+							>
+								<img
+									src={ image.url }
+									alt=""
+									style={ {
+										flex: 'none',
+										width: '48px',
+										height: '32px',
+										objectFit: 'contain',
+										background: '#f0f0f0',
+									} }
+								/>
+								<div style={ { flex: 1, minWidth: 0 } }>
+									<TextControl
+										label={ sprintf(
+											/* translators: %d: position of the logo */
+											__(
+												'Alt text of logo %d',
+												'moira-wong-orthodontics'
+											),
+											index + 1
+										) }
+										hideLabelFromVision
+										value={ image.alt || '' }
+										onChange={ ( value ) =>
+											updateAlt( index, value )
+										}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
+									/>
+								</div>
+							</div>
+						) ) }
+					</PanelBody>
+				) }
 			</InspectorControls>
 			<section { ...blockProps }>
 				<div className="mw-content">
@@ -145,11 +214,12 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					{ images.length === 0 ? (
 						<MediaPlaceholder
+							className="mw-logos__placeholder"
 							icon="awards"
 							labels={ {
 								title: __( 'Logos', 'moira-wong-orthodontics' ),
 								instructions: __(
-									'Choose the logos from the media library or upload them.',
+									'Choose logos from the media library or upload them.',
 									'moira-wong-orthodontics'
 								),
 							} }

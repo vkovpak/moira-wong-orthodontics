@@ -50,6 +50,22 @@ $pad-calc: calc(#{$pad-min} + (100cqi - #{$phase-2-end}) / 4);
 	margin-bottom: 7rem !important;
 }
 
+// With the cards in one column and a call to action right after them, the room
+// between the last card and the next section is shared equally by the button:
+// 5.25rem on each side (the testimonials add none of their own). The cards
+// stack at $phase-2-end of container width; the section's side padding is 25px
+// on each side there, and a classic scrollbar (17px) is part of the viewport
+// width but not of the container's.
+@media (max-width: #{$phase-2-end + 2 * 25px + 17px}) {
+	.mw-testimonials:has(+ .mw-cta) {
+		margin-bottom: 0 !important;
+	}
+
+	body .mw-testimonials + .mw-cta.mw-section {
+		margin-block: 5.25rem;
+	}
+}
+
 .mw-testimonials__title {
 	display: flex;
 	align-items: center;

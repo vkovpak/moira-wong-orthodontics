@@ -6,6 +6,7 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
+	TextControl,
 	ToggleControl,
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
@@ -17,12 +18,14 @@ import usePhotoAttributes from './use-photo-attributes';
 // sidebar, which lays the block out as it is without a photo. The block keeps
 // its attributes as mediaId / mediaUrl / mediaAlt / hasPhoto. With
 // `withPosition` the panel also has a Left / Right switch (photoPosition).
+// Once a picture is chosen the panel has its alt text, filled in from the media
+// library and editable here (the library's own text is left as it is).
 export default function PhotoControls( {
 	attributes,
 	setAttributes,
 	withPosition = false,
 } ) {
-	const { hasPhoto, mediaId, mediaUrl, photoPosition } = attributes;
+	const { hasPhoto, mediaId, mediaUrl, mediaAlt, photoPosition } = attributes;
 	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
@@ -79,6 +82,24 @@ export default function PhotoControls( {
 								) }
 							/>
 						</ToggleGroupControl>
+					) }
+					{ hasPhoto && mediaUrl && (
+						<TextControl
+							label={ __(
+								'Photo alt text',
+								'moira-wong-orthodontics'
+							) }
+							help={ __(
+								'Describes the photo for screen readers. Leave empty if it is only decoration.',
+								'moira-wong-orthodontics'
+							) }
+							value={ mediaAlt || '' }
+							onChange={ ( value ) =>
+								setAttributes( { mediaAlt: value } )
+							}
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+						/>
 					) }
 				</PanelBody>
 			</InspectorControls>

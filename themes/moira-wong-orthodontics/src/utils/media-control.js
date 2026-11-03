@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { useEffect, useState } from '@wordpress/element';
 import { Button, Spinner } from '@wordpress/components';
 
 // Inline SVGs, not dashicon name strings: the editor canvas iframe does not load
@@ -37,7 +38,9 @@ const arrowRightIcon = svg( 'M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z' );
 
 // An image with a hover/focus toolbar: move left/right, replace (pencil), remove (trash).
 // A blob: preview without an attachment id yet means an upload is in progress, so a
-// spinner replaces the toolbar until the real attachment arrives.
+// spinner replaces the toolbar until the real attachment arrives. A file that
+// cannot be loaded (deleted from the library) gets `is-missing`, which the editor
+// shows as an empty slot.
 export default function MediaControl( {
 	className,
 	url,
@@ -52,17 +55,24 @@ export default function MediaControl( {
 	moveRightDisabled,
 } ) {
 	const isUploading = ! id;
+	const [ isMissing, setIsMissing ] = useState( false );
+
+	useEffect( () => setIsMissing( false ), [ url ] );
 
 	return (
 		<div
 			className={ `${ className } mw-media-control${
 				isUploading ? ' is-uploading' : ''
-			}` }
+			}${ isMissing ? ' is-missing' : '' }` }
 			tabIndex={ 0 }
 			role="group"
 			aria-label={ title }
 		>
-			<img src={ url } alt={ alt } />
+			<img
+				src={ url }
+				alt={ alt }
+				onError={ () => setIsMissing( true ) }
+			/>
 			{ isUploading ? (
 				<div className="mw-media-control__spinner">
 					<Spinner />

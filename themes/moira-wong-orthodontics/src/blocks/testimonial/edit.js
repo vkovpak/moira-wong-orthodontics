@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
+	InspectorControls,
 	RichText,
 	MediaUpload,
 	MediaUploadCheck,
 } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
+import { Button, PanelBody, TextControl } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
 import usePhotoAttributes from '../../utils/use-photo-attributes';
 
@@ -58,6 +59,43 @@ function PhotoSlot( { kind, label, id, url, alt, onSelect, onRemove } ) {
 	);
 }
 
+// The alt text of one photo, with its thumbnail. Filled in from the media
+// library when the picture is chosen; editing it here leaves the library as it
+// is.
+function AltField( { label, url, alt, onChange } ) {
+	return (
+		<div
+			style={ {
+				display: 'flex',
+				alignItems: 'flex-start',
+				gap: '8px',
+				marginBottom: '12px',
+			} }
+		>
+			<img
+				src={ url }
+				alt=""
+				style={ {
+					flex: 'none',
+					width: '40px',
+					height: '40px',
+					borderRadius: '50%',
+					objectFit: 'cover',
+				} }
+			/>
+			<div style={ { flex: 1, minWidth: 0 } }>
+				<TextControl
+					label={ label }
+					value={ alt || '' }
+					onChange={ onChange }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+				/>
+			</div>
+		</div>
+	);
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		afterId,
@@ -79,57 +117,120 @@ export default function Edit( { attributes, setAttributes } ) {
 	const before = usePhotoAttributes( setAttributes, 'before' );
 
 	return (
-		<article { ...blockProps }>
-			<div className="mw-testimonial__photos">
-				<PhotoSlot
-					kind="after"
-					label={ __( 'After photo', 'moira-wong-orthodontics' ) }
-					id={ afterId }
-					url={ afterUrl }
-					alt={ afterAlt }
-					onSelect={ after.onSelect }
-					onRemove={ after.onRemove }
-				/>
-				<PhotoSlot
-					kind="before"
-					label={ __( 'Before photo', 'moira-wong-orthodontics' ) }
-					id={ beforeId }
-					url={ beforeUrl }
-					alt={ beforeAlt }
-					onSelect={ before.onSelect }
-					onRemove={ before.onRemove }
-				/>
-			</div>
-			<div className="mw-testimonial__head">
-				<span className="mw-testimonial__smile" aria-hidden="true" />
+		<>
+			{ ( afterUrl || beforeUrl ) && (
+				<InspectorControls>
+					<PanelBody
+						title={ __(
+							'Photo alt text',
+							'moira-wong-orthodontics'
+						) }
+						initialOpen
+					>
+						<p
+							style={ {
+								margin: '0 0 12px',
+								color: '#757575',
+								fontSize: '12px',
+								lineHeight: '18px',
+							} }
+						>
+							{ __(
+								'Say who is shown and whether each is before or after treatment.',
+								'moira-wong-orthodontics'
+							) }
+						</p>
+						{ beforeUrl && (
+							<AltField
+								label={ __(
+									'Before photo',
+									'moira-wong-orthodontics'
+								) }
+								url={ beforeUrl }
+								alt={ beforeAlt }
+								onChange={ ( value ) =>
+									setAttributes( { beforeAlt: value } )
+								}
+							/>
+						) }
+						{ afterUrl && (
+							<AltField
+								label={ __(
+									'After photo',
+									'moira-wong-orthodontics'
+								) }
+								url={ afterUrl }
+								alt={ afterAlt }
+								onChange={ ( value ) =>
+									setAttributes( { afterAlt: value } )
+								}
+							/>
+						) }
+					</PanelBody>
+				</InspectorControls>
+			) }
+			<article { ...blockProps }>
+				<div className="mw-testimonial__photos">
+					<PhotoSlot
+						kind="after"
+						label={ __( 'After photo', 'moira-wong-orthodontics' ) }
+						id={ afterId }
+						url={ afterUrl }
+						alt={ afterAlt }
+						onSelect={ after.onSelect }
+						onRemove={ after.onRemove }
+					/>
+					<PhotoSlot
+						kind="before"
+						label={ __(
+							'Before photo',
+							'moira-wong-orthodontics'
+						) }
+						id={ beforeId }
+						url={ beforeUrl }
+						alt={ beforeAlt }
+						onSelect={ before.onSelect }
+						onRemove={ before.onRemove }
+					/>
+				</div>
+				<div className="mw-testimonial__head">
+					<span
+						className="mw-testimonial__smile"
+						aria-hidden="true"
+					/>
+					<RichText
+						tagName="p"
+						className="mw-testimonial__quote"
+						value={ quote }
+						onChange={ ( value ) =>
+							setAttributes( { quote: value } )
+						}
+						placeholder={ __( 'Quote', 'moira-wong-orthodontics' ) }
+						allowedFormats={ QUOTE_FORMATS }
+					/>
+					<RichText
+						tagName="p"
+						className="mw-testimonial__name"
+						value={ name }
+						onChange={ ( value ) =>
+							setAttributes( { name: value } )
+						}
+						placeholder={ __(
+							'Who said it',
+							'moira-wong-orthodontics'
+						) }
+						allowedFormats={ QUOTE_FORMATS }
+					/>
+				</div>
 				<RichText
 					tagName="p"
-					className="mw-testimonial__quote"
-					value={ quote }
-					onChange={ ( value ) => setAttributes( { quote: value } ) }
-					placeholder={ __( 'Quote', 'moira-wong-orthodontics' ) }
-					allowedFormats={ QUOTE_FORMATS }
+					className="mw-testimonial__text"
+					value={ text }
+					onChange={ ( value ) => setAttributes( { text: value } ) }
+					placeholder={ __( 'Text', 'moira-wong-orthodontics' ) }
+					allowedFormats={ TEXT_FORMATS }
 				/>
-				<RichText
-					tagName="p"
-					className="mw-testimonial__name"
-					value={ name }
-					onChange={ ( value ) => setAttributes( { name: value } ) }
-					placeholder={ __(
-						'Who said it',
-						'moira-wong-orthodontics'
-					) }
-					allowedFormats={ QUOTE_FORMATS }
-				/>
-			</div>
-			<RichText
-				tagName="p"
-				className="mw-testimonial__text"
-				value={ text }
-				onChange={ ( value ) => setAttributes( { text: value } ) }
-				placeholder={ __( 'Text', 'moira-wong-orthodontics' ) }
-				allowedFormats={ TEXT_FORMATS }
-			/>
-		</article>
+			</article>
+		</>
 	);
 }

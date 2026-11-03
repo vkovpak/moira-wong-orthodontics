@@ -100,13 +100,18 @@
 		0 0 / var(--mw-empty-tile) var(--mw-empty-tile);
 }
 
-// Empty state of every image slot: grey box with a light outline, muted label
-// and instructions, white secondary buttons. The pointer is the plain arrow:
-// the editor's grab cursor would suggest the box can be dragged.
+// The pointer over an image slot, a chosen photo or a logo is the plain arrow:
+// the editor's grab cursor on the whole block would suggest the picture can be
+// dragged.
 .components-placeholder.components-placeholder,
-.mw-media-control:not(:has(img)) {
+.mw-media-control,
+.mw-media-control img,
+.mw-logos__item img {
 	cursor: default;
 }
+
+// Empty state of every image slot: grey box with a light outline, muted label
+// and instructions, white secondary buttons.
 
 .components-placeholder.components-placeholder {
 	justify-content: center;
@@ -130,6 +135,54 @@
 	// the tinted box instead of a clean white button.
 	.components-button.is-secondary {
 		background: var(--wp--preset--color--base);
+	}
+}
+
+// A picture whose file cannot be loaded is an empty slot too.
+.mw-media-control.is-missing img {
+	min-width: 12rem;
+	min-height: calc(var(--mw-logos-cap, 60px) * 0.75);
+	background: var(--mw-empty-pattern), var(--mw-empty-bg);
+	box-shadow: inset 0 0 0 1px var(--wp--preset--color--grey-light);
+	color: transparent;
+	font-size: 0;
+}
+
+// mw/logos with no logo yet: the instructions and the buttons alone, centred,
+// on the page's own background, as high as a row of logos at their default
+// maximum height (60px) with the row's own 24px above and below. The title is
+// kept for screen readers only.
+.mw-logos__placeholder.components-placeholder.components-placeholder {
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: flex-start;
+	height: calc(6rem + 48px);
+	min-height: 0;
+	gap: 1rem;
+	padding-block: calc(24px + 0.4rem) 24px;
+	background: none;
+	box-shadow: none;
+	text-align: center;
+
+	.components-placeholder__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+
+	.components-placeholder__fieldset {
+		justify-content: center;
+	}
+
+	.components-placeholder__instructions {
+		margin: 0;
+	}
+
+	.components-button {
+		height: 3rem;
+		min-height: 3rem;
 	}
 }
 
