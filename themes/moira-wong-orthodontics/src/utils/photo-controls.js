@@ -6,11 +6,11 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	TextControl,
 	ToggleControl,
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import AltField from './alt-field';
 import usePhotoAttributes from './use-photo-attributes';
 
 // Controls shared by the blocks whose photo is optional: a "Photo" menu in the
@@ -84,21 +84,15 @@ export default function PhotoControls( {
 						</ToggleGroupControl>
 					) }
 					{ hasPhoto && mediaUrl && (
-						<TextControl
+						<AltField
 							label={ __(
 								'Photo alt text',
 								'moira-wong-orthodontics'
 							) }
-							help={ __(
-								'Describes the photo for screen readers. Leave empty if it is only decoration.',
-								'moira-wong-orthodontics'
-							) }
-							value={ mediaAlt || '' }
+							alt={ mediaAlt }
 							onChange={ ( value ) =>
 								setAttributes( { mediaAlt: value } )
 							}
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 						/>
 					) }
 				</PanelBody>

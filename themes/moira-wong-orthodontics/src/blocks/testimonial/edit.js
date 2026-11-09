@@ -6,8 +6,9 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 } from '@wordpress/block-editor';
-import { Button, PanelBody, TextControl } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import MediaControl, { imageIcon } from '../../utils/media-control';
+import AltTextPanel from '../../utils/alt-text-panel';
 import usePhotoAttributes from '../../utils/use-photo-attributes';
 
 const QUOTE_FORMATS = [ 'core/bold', 'core/italic' ];
@@ -59,43 +60,6 @@ function PhotoSlot( { kind, label, id, url, alt, onSelect, onRemove } ) {
 	);
 }
 
-// The alt text of one photo, with its thumbnail. Filled in from the media
-// library when the picture is chosen; editing it here leaves the library as it
-// is.
-function AltField( { label, url, alt, onChange } ) {
-	return (
-		<div
-			style={ {
-				display: 'flex',
-				alignItems: 'flex-start',
-				gap: '8px',
-				marginBottom: '12px',
-			} }
-		>
-			<img
-				src={ url }
-				alt=""
-				style={ {
-					flex: 'none',
-					width: '40px',
-					height: '40px',
-					borderRadius: '50%',
-					objectFit: 'cover',
-				} }
-			/>
-			<div style={ { flex: 1, minWidth: 0 } }>
-				<TextControl
-					label={ label }
-					value={ alt || '' }
-					onChange={ onChange }
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
-				/>
-			</div>
-		</div>
-	);
-}
-
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		afterId,
@@ -118,57 +82,41 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<>
-			{ ( afterUrl || beforeUrl ) && (
-				<InspectorControls>
-					<PanelBody
-						title={ __(
-							'Photo alt text',
-							'moira-wong-orthodontics'
-						) }
-						initialOpen
-					>
-						<p
-							style={ {
-								margin: '0 0 12px',
-								color: '#757575',
-								fontSize: '12px',
-								lineHeight: '18px',
-							} }
-						>
-							{ __(
-								'Say who is shown and whether each is before or after treatment.',
+			<InspectorControls>
+				<AltTextPanel
+					title={ __( 'Photo alt text', 'moira-wong-orthodontics' ) }
+					help={ __(
+						'Say who is shown and whether each is before or after treatment.',
+						'moira-wong-orthodontics'
+					) }
+					items={ [
+						{
+							key: 'before',
+							label: __(
+								'Before photo',
 								'moira-wong-orthodontics'
-							) }
-						</p>
-						{ beforeUrl && (
-							<AltField
-								label={ __(
-									'Before photo',
-									'moira-wong-orthodontics'
-								) }
-								url={ beforeUrl }
-								alt={ beforeAlt }
-								onChange={ ( value ) =>
-									setAttributes( { beforeAlt: value } )
-								}
-							/>
-						) }
-						{ afterUrl && (
-							<AltField
-								label={ __(
-									'After photo',
-									'moira-wong-orthodontics'
-								) }
-								url={ afterUrl }
-								alt={ afterAlt }
-								onChange={ ( value ) =>
-									setAttributes( { afterAlt: value } )
-								}
-							/>
-						) }
-					</PanelBody>
-				</InspectorControls>
-			) }
+							),
+							showThumb: true,
+							url: beforeUrl,
+							alt: beforeAlt,
+							onChange: ( value ) =>
+								setAttributes( { beforeAlt: value } ),
+						},
+						{
+							key: 'after',
+							label: __(
+								'After photo',
+								'moira-wong-orthodontics'
+							),
+							showThumb: true,
+							url: afterUrl,
+							alt: afterAlt,
+							onChange: ( value ) =>
+								setAttributes( { afterAlt: value } ),
+						},
+					] }
+				/>
+			</InspectorControls>
 			<article { ...blockProps }>
 				<div className="mw-testimonial__photos">
 					<PhotoSlot

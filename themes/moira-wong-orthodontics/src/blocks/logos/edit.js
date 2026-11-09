@@ -12,12 +12,12 @@ import {
 import {
 	PanelBody,
 	RangeControl,
-	TextControl,
 	ToggleControl,
 	ToolbarGroup,
 	ToolbarButton,
 } from '@wordpress/components';
 import MediaControl, { plusIcon } from '../../utils/media-control';
+import AltTextPanel from '../../utils/alt-text-panel';
 import { observeLogosRow } from '../../utils/balance-logos';
 
 // Basic inline formatting only; the title stays a single line.
@@ -130,68 +130,29 @@ export default function Edit( { attributes, setAttributes } ) {
 						__next40pxDefaultSize
 					/>
 				</PanelBody>
-				{ images.length > 0 && (
-					<PanelBody
-						title={ __( 'Alt text', 'moira-wong-orthodontics' ) }
-						initialOpen
-					>
-						<p
-							style={ {
-								margin: '0 0 12px',
-								color: '#757575',
-								fontSize: '12px',
-								lineHeight: '18px',
-							} }
-						>
-							{ __(
-								'Name the organisation each logo shows.',
+				<AltTextPanel
+					help={ __(
+						'Name the organisation each logo shows.',
+						'moira-wong-orthodontics'
+					) }
+					items={ images.map( ( image, index ) => ( {
+						key: image.id ?? index,
+						hideLabel: true,
+						showThumb: true,
+						thumbShape: 'contain',
+						url: image.url,
+						alt: image.alt,
+						label: sprintf(
+							/* translators: %d: position of the logo */
+							__(
+								'Alt text of logo %d',
 								'moira-wong-orthodontics'
-							) }
-						</p>
-						{ images.map( ( image, index ) => (
-							<div
-								key={ image.id ?? index }
-								style={ {
-									display: 'flex',
-									alignItems: 'center',
-									gap: '8px',
-									marginBottom: '8px',
-								} }
-							>
-								<img
-									src={ image.url }
-									alt=""
-									style={ {
-										flex: 'none',
-										width: '48px',
-										height: '32px',
-										objectFit: 'contain',
-										background: '#f0f0f0',
-									} }
-								/>
-								<div style={ { flex: 1, minWidth: 0 } }>
-									<TextControl
-										label={ sprintf(
-											/* translators: %d: position of the logo */
-											__(
-												'Alt text of logo %d',
-												'moira-wong-orthodontics'
-											),
-											index + 1
-										) }
-										hideLabelFromVision
-										value={ image.alt || '' }
-										onChange={ ( value ) =>
-											updateAlt( index, value )
-										}
-										__nextHasNoMarginBottom
-										__next40pxDefaultSize
-									/>
-								</div>
-							</div>
-						) ) }
-					</PanelBody>
-				) }
+							),
+							index + 1
+						),
+						onChange: ( value ) => updateAlt( index, value ),
+					} ) ) }
+				/>
 			</InspectorControls>
 			<section { ...blockProps }>
 				<div className="mw-content">

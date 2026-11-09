@@ -218,3 +218,62 @@
 		width: auto;
 	}
 }
+
+// Alt text fields in the block sidebar (src/utils/alt-field.js,
+// alt-text-panel.js).
+.mw-alt-panel__help {
+	margin: 0 0 12px;
+	color: #757575;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.mw-alt-field {
+	margin-top: 16px;
+	margin-bottom: 16px;
+
+	&__label {
+		display: block;
+		margin-bottom: 8px;
+		font-size: 11px;
+		font-weight: 500;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	&__row {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	// Nested so it outranks the editor's own `img { height: auto }`.
+	.mw-alt-field__thumb {
+		flex: none;
+		box-sizing: border-box;
+		width: 40px;
+		height: 40px;
+
+		// Level with the textarea: below the label (11px * 1.4 + 8px margin).
+		&.has-label {
+			margin-top: calc(11px * 1.4 + 8px);
+		}
+
+		&.is-round {
+			border-radius: 50%;
+			object-fit: cover;
+		}
+
+		&.is-contain {
+			padding: 2px;
+			border: solid 1px rgb(240, 240, 240);
+			border-radius: 4px;
+			object-fit: contain;
+		}
+	}
+
+	&__input {
+		flex: 1;
+		min-width: 0;
+	}
+}
