@@ -134,9 +134,6 @@ function mw_enqueue_editor_script() {
 	if ( file_exists( $css ) ) {
 		wp_enqueue_style( 'mw-editor', get_template_directory_uri() . '/build/theme/editor.css', array( 'wp-edit-blocks' ), (string) filemtime( $css ) );
 	}
-
-	// Hides the Site Logo's "Image width" setting while the header or footer logo is selected (see src/theme/editor.js).
-	wp_add_inline_style( 'wp-block-editor', 'body.mw-logo-size-locked .block-editor-block-inspector .components-tools-panel-item:has(input[type="range"]) { display: none; }' );
 }
 add_action( 'enqueue_block_editor_assets', 'mw_enqueue_editor_script' );
 

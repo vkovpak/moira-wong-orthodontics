@@ -165,7 +165,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						variant="secondary"
 						icon={ plusIcon }
 						onClick={ addQuestion }
-						style={ { marginTop: '12px' } }
+						className="mw-faq__add"
 					>
 						{ __( 'Add question', 'moira-wong-orthodontics' ) }
 					</Button>

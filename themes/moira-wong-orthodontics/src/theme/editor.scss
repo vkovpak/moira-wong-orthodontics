@@ -277,3 +277,14 @@
 		min-width: 0;
 	}
 }
+
+// Sidebar of mw/faq: space above the "Add question" button.
+.mw-faq__add {
+	margin-top: 12px;
+}
+
+// The Site Logo's "Image width" setting is hidden while the header or footer
+// logo is selected (body class set in editor.js).
+body.mw-logo-size-locked .block-editor-block-inspector .components-tools-panel-item:has(input[type="range"]) {
+	display: none;
+}
