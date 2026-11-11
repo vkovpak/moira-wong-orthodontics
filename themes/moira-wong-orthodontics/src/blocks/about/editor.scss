@@ -34,6 +34,11 @@ $bubble-over: 98px;
 	padding-inline: 10px $bubble-over;
 }
 
+// No bubble over the empty slot: the form is centred in the whole box.
+.mw-about.no-bubble .mw-photo-placeholder.mw-about__placeholder.components-placeholder.components-placeholder {
+	padding-inline: 10px;
+}
+
 // With no picture yet the bubble sits 10px from the top of the grey box.
 .mw-about__figure:has(.mw-about__placeholder) .mw-about__bubble {
 	top: 10px;

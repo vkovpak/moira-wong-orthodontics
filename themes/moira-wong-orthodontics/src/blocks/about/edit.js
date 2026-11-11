@@ -29,19 +29,24 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { hasPhoto, photoPosition, mediaId, mediaUrl, mediaAlt } = attributes;
+	const { hasPhoto, hasBubble, photoPosition, mediaId, mediaUrl, mediaAlt } =
+		attributes;
 
 	const blockProps = useBlockProps( {
 		className: `mw-about mw-section${
 			hasPhoto && photoPosition === 'left' ? ' photo-left' : ''
-		}`,
+		}${ hasPhoto && ! hasBubble ? ' no-bubble' : '' }`,
 	} );
 
 	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
+	// identifier is the attribute name: without it the editor's selection has no
+	// attribute key, and Shift + arrow selects the whole block and its neighbour
+	// instead of text.
 	const field = ( className, key, placeholder ) => (
 		<RichText
 			tagName="p"
+			identifier={ key }
 			className={ className }
 			value={ attributes[ key ] }
 			onChange={ ( value ) => setAttributes( { [ key ]: value } ) }
@@ -56,6 +61,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				attributes={ attributes }
 				setAttributes={ setAttributes }
 				withPosition
+				withBubble
 			/>
 			<section { ...blockProps }>
 				<div className="mw-content mw-about__layout">
@@ -81,21 +87,26 @@ export default function Edit( { attributes, setAttributes } ) {
 					{ hasPhoto && (
 						<div className="mw-about__photo">
 							<div className="mw-about__figure">
-								<div className="mw-about__bubble">
-									{ field(
-										'mw-about__bubble-quote',
-										'bubbleQuote',
-										__( 'Quote', 'moira-wong-orthodontics' )
-									) }
-									{ field(
-										'mw-about__bubble-name',
-										'bubbleName',
-										__(
-											'Who said it',
-											'moira-wong-orthodontics'
-										)
-									) }
-								</div>
+								{ hasBubble && (
+									<div className="mw-about__bubble">
+										{ field(
+											'mw-about__bubble-quote',
+											'bubbleQuote',
+											__(
+												'Quote',
+												'moira-wong-orthodontics'
+											)
+										) }
+										{ field(
+											'mw-about__bubble-name',
+											'bubbleName',
+											__(
+												'Who said it',
+												'moira-wong-orthodontics'
+											)
+										) }
+									</div>
+								) }
 								{ mediaUrl ? (
 									<MediaControl
 										className="mw-about__image"

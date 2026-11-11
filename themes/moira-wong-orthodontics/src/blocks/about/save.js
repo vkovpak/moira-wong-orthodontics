@@ -3,6 +3,7 @@ import { useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
 export default function save( { attributes } ) {
 	const {
 		hasPhoto,
+		hasBubble,
 		photoPosition,
 		mediaId,
 		mediaUrl,
@@ -15,11 +16,11 @@ export default function save( { attributes } ) {
 	const blockProps = useBlockProps.save( {
 		className: `mw-about mw-section${
 			hasPhoto && photoPosition === 'left' ? ' photo-left' : ''
-		}`,
+		}${ hasPhoto && ! hasBubble ? ' no-bubble' : '' }`,
 	} );
 	const hasReview =
 		! RichText.isEmpty( reviewQuote ) || ! RichText.isEmpty( reviewName );
-	const hasBubble =
+	const bubbleHasText =
 		! RichText.isEmpty( bubbleQuote ) || ! RichText.isEmpty( bubbleName );
 
 	return (
@@ -49,7 +50,7 @@ export default function save( { attributes } ) {
 				{ hasPhoto && (
 					<div className="mw-about__photo">
 						<div className="mw-about__figure">
-							{ hasBubble && (
+							{ hasBubble && bubbleHasText && (
 								<div className="mw-about__bubble">
 									{ ! RichText.isEmpty( bubbleQuote ) && (
 										<RichText.Content

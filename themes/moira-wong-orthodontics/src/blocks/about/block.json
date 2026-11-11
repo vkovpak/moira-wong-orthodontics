@@ -17,6 +17,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"hasBubble": {
+			"type": "boolean",
+			"default": true
+		},
 		"photoPosition": {
 			"type": "string",
 			"default": "right"

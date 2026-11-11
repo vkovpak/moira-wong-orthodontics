@@ -130,8 +130,9 @@ $stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
 }
 
 // Without a photo the text is the only thing in the layout: its block is
-// centred in the row, at most 800px wide. What is inside is aligned by the
-// alignment settings of the heading, paragraphs and buttons themselves.
+// centred in the row, at most 800px wide. The heading starts centred (the
+// alignment setting of the heading itself wins over that: :where keeps the
+// default at the lowest specificity); the buttons are centred by edit.js.
 .mw-intro__layout:not(:has(.mw-intro__photo)) {
 	grid-template-columns: minmax(0, 1fr);
 	padding-right: 0;
@@ -140,4 +141,8 @@ $stack: 760px; // ($stack - $gap) * 465 / 990 = the picture's 331px
 		max-width: 800px;
 		margin-inline: auto;
 	}
+}
+
+:where(.mw-intro__layout:not(:has(.mw-intro__photo)) .mw-intro__text) h2 {
+	text-align: center;
 }

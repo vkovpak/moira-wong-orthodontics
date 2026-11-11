@@ -17,15 +17,18 @@ import usePhotoAttributes from './use-photo-attributes';
 // block toolbar (replace or remove the picture) and a "Has photo" switch in the
 // sidebar, which lays the block out as it is without a photo. The block keeps
 // its attributes as mediaId / mediaUrl / mediaAlt / hasPhoto. With
-// `withPosition` the panel also has a Left / Right switch (photoPosition).
+// `withPosition` the panel also has a Left / Right switch (photoPosition), with
+// `withBubble` a "Has quotation bubble" switch (hasBubble) while there is a photo.
 // Once a picture is chosen the panel has its alt text, filled in from the media
 // library and editable here (the library's own text is left as it is).
 export default function PhotoControls( {
 	attributes,
 	setAttributes,
 	withPosition = false,
+	withBubble = false,
 } ) {
-	const { hasPhoto, mediaId, mediaUrl, mediaAlt, photoPosition } = attributes;
+	const { hasPhoto, hasBubble, mediaId, mediaUrl, mediaAlt, photoPosition } =
+		attributes;
 	const { onSelect, onRemove } = usePhotoAttributes( setAttributes );
 
 	return (
@@ -93,6 +96,19 @@ export default function PhotoControls( {
 							onChange={ ( value ) =>
 								setAttributes( { mediaAlt: value } )
 							}
+						/>
+					) }
+					{ withBubble && hasPhoto && (
+						<ToggleControl
+							label={ __(
+								'Has quotation bubble',
+								'moira-wong-orthodontics'
+							) }
+							checked={ hasBubble }
+							onChange={ ( value ) =>
+								setAttributes( { hasBubble: value } )
+							}
+							__nextHasNoMarginBottom
 						/>
 					) }
 				</PanelBody>

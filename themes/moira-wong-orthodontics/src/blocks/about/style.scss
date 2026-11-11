@@ -221,6 +221,58 @@ $room-photo-left: 80px;
 	}
 }
 
+// Without the bubble nothing sticks out beside the picture: the text loses its
+// left padding, the paragraphs and the review are as wide as the heading (the
+// same room on the right) and, with the photo on the right, the review loses
+// its indent. With the photo on the left the review keeps its indent. Only
+// above $stack, where the columns sit side by side; the stacked layout is
+// already centred and full width.
+@container (min-width: #{$stack + 1px}) {
+	.mw-about.no-bubble .mw-about__text {
+		--mw-right-room: #{$bubble-out + $title-right};
+
+		padding-left: 0;
+	}
+
+	.mw-about.no-bubble.photo-left .mw-about__text {
+		--mw-right-room: #{$room-photo-left};
+	}
+
+	.mw-about.no-bubble:not(.photo-left) .mw-about__review {
+		padding-inline: 0;
+	}
+}
+
+// Without a photo the text is the only thing in the layout: its block is
+// centred in the row, at most 800px wide, as in mw/intro, with none of the room
+// kept for the photo and the bubble. What is inside is left aligned.
+.mw-about__layout:not(:has(.mw-about__photo)) {
+	grid-template-columns: minmax(0, 1fr);
+
+	.mw-about__text {
+		--mw-right-room: 0px;
+
+		max-width: 800px;
+		margin-inline: auto;
+		padding-left: 0;
+		text-align: start;
+
+		h2 {
+			margin-right: 0;
+		}
+	}
+
+	.mw-about__review {
+		padding-inline: 0;
+	}
+}
+
+// The heading is centred by default; its own alignment setting wins over this
+// (:where keeps it at the lowest specificity).
+:where(.mw-about__layout:not(:has(.mw-about__photo)) .mw-about__text) h2 {
+	text-align: center;
+}
+
 @container (max-width: #{$stack}) {
 	.mw-about__layout {
 		grid-template-columns: minmax(0, 1fr);
@@ -294,6 +346,21 @@ $room-photo-left: 80px;
 		max-width: none;
 		zoom: var(--mw-zoom);
 		margin-left: calc(max(var(--mw-edge), var(--mw-mid)) / var(--mw-zoom));
+	}
+
+	// Without the bubble the picture is alone: centred, at its own size, no
+	// zoom, and never wider than the container.
+	.mw-about.no-bubble {
+		.mw-about__photo {
+			justify-content: center;
+		}
+
+		.mw-about__figure {
+			flex: initial;
+			max-width: 100%;
+			zoom: 1;
+			margin-left: 0;
+		}
 	}
 }
 
