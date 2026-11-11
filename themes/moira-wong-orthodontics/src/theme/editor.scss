@@ -33,6 +33,7 @@
 
 			// Keep core's focus ring for keyboard focus only.
 			&:focus:not(:focus-visible) {
+				outline: none;
 				box-shadow: none;
 			}
 

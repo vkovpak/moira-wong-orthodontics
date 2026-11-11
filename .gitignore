@@ -2,4 +2,5 @@
 node_modules/
 build/
 .playwright-mcp/
-plugins/contact-form-7/
+plugins/*
+!plugins/index.php

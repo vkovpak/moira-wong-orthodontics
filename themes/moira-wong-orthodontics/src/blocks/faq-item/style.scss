@@ -3,6 +3,9 @@
 // The number sticks out of the card's top-left corner; the card's line is left
 // out behind it by giving the number a background of the section's colour.
 $line: #edd735;
+// The viewport width at which the testimonials go into one column (see
+// testimonials/style.scss), where the numbers get smaller too.
+$testimonials-stack: 993px;
 
 .mw-faq-item {
 	position: relative;
@@ -36,6 +39,15 @@ $line: #edd735;
 
 	&::before {
 		content: counter(mw-faq);
+	}
+
+	@media (max-width: $testimonials-stack) {
+		font-size: 6rem;
+	}
+
+	@media (max-width: 380px) {
+		left: -0.2rem;
+		font-size: 5rem;
 	}
 }
 

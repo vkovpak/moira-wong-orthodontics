@@ -131,11 +131,22 @@ $ring-overlap: 10px;
 	}
 }
 
+// The compact logo: a fixed height with 6px above it and none below, so it is
+// always shorter than the 46px header (a card as high as the header would show
+// its edge on screens where the header's height is not a whole pixel).
+@mixin compact-logo {
+	--mw-logo-h: 34.3px;
+	--mw-logo-pad-y: 6px;
+	--mw-logo-pad-x: 0px;
+
+	a {
+		padding-bottom: 0;
+	}
+}
+
 @media (min-width: 701px) {
 	html.mw-scrolled .mw-header__inner .mw-header__logo {
-		--mw-logo-h: 33.7px;
-		--mw-logo-pad-y: 6.4px;
-		--mw-logo-pad-x: 6.4px;
+		@include compact-logo;
 	}
 }
 
@@ -201,15 +212,9 @@ html.mw-scrolled.mw-header-transitioning .mw-header__inner .mw-header__logo {
 // background, with no card edge and no room below it.
 @media (max-width: 700px) {
 	.mw-header__inner .mw-header__logo {
-		--mw-logo-h: 34.3px;
-		--mw-logo-pad-y: 6px;
-		--mw-logo-pad-x: 0px;
+		@include compact-logo;
 
 		background: none;
-
-		a {
-			padding-bottom: 0;
-		}
 	}
 }
 

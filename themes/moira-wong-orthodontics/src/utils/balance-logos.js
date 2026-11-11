@@ -10,7 +10,8 @@
 // Up to three rows keep the full width: data-layout="rows" plus a data-row
 // (1-3) on every logo make CSS force the line breaks, rows of four or more
 // logos stay spread, and rows of up to three are centred through
-// data-centre-start / data-centre-end on their first and last logo. More rows
+// data-centre-start / data-centre-end on their first and last logo, with the
+// same space between the logos as the spread rows have. More rows
 // than that fall back to data-layout="balanced": the row is narrowed to fit the
 // chosen layout and every row is centred.
 //
@@ -159,10 +160,31 @@ function resetRow( row ) {
 		delete item.dataset.row;
 		delete item.dataset.centreStart;
 		delete item.dataset.centreEnd;
+		item.style.removeProperty( 'margin-inline-start' );
 	}
 }
 
-function applyLayout( row, state, available ) {
+// The space between the logos of the first spread row (space-between puts the
+// room that is left equally between them), or null when no row is spread.
+function spreadSpace( counts, widths, available ) {
+	let index = 0;
+
+	for ( const count of counts ) {
+		if ( count > MAX_CENTRED_LOGOS ) {
+			const total = widths
+				.slice( index, index + count )
+				.reduce( ( sum, width ) => sum + width, 0 );
+
+			return ( available - total ) / ( count - 1 );
+		}
+
+		index += count;
+	}
+
+	return null;
+}
+
+function applyLayout( row, state, available, widths, gap ) {
 	const items = Array.from( row.children );
 
 	if ( state.layout === 'balanced' ) {
@@ -170,6 +192,7 @@ function applyLayout( row, state, available ) {
 	}
 
 	if ( state.layout === 'rows' ) {
+		const space = spreadSpace( state.counts, widths, available );
 		let index = 0;
 
 		state.counts.forEach( ( count, rowIndex ) => {
@@ -184,6 +207,24 @@ function applyLayout( row, state, available ) {
 			if ( count <= MAX_CENTRED_LOGOS ) {
 				rowItems[ 0 ].dataset.centreStart = '';
 				rowItems[ rowItems.length - 1 ].dataset.centreEnd = '';
+
+				// The same space between the logos as in the spread row, as far
+				// as the row has room for it (the row's own gap is already there).
+				if ( space !== null && rowItems.length > 1 ) {
+					const rowWidths = widths.slice( index - count, index );
+					const room =
+						( available -
+							rowWidths.reduce(
+								( sum, width ) => sum + width,
+								0
+							) ) /
+						( count - 1 );
+					const extra = Math.max( 0, Math.min( space, room ) - gap );
+
+					rowItems.slice( 1 ).forEach( ( item ) => {
+						item.style.marginInlineStart = `${ extra }px`;
+					} );
+				}
 			}
 		} );
 	}
@@ -225,7 +266,7 @@ export function balanceLogosRow( row ) {
 		states.set( row, state );
 	}
 
-	applyLayout( row, state, available );
+	applyLayout( row, state, available, widths, gap );
 }
 
 // Keeps a row laid out as its section is resized, logos load, or logos are

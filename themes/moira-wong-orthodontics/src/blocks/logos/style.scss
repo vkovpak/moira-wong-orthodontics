@@ -9,6 +9,8 @@
 // The section (.mw-section) is full width and its .mw-content column is
 // centred, so neither the title nor the row sets a max-width of its own.
 .mw-logos {
+	container-type: inline-size;
+
 	// Optional heading line with a thin yellow rule under it. The doubled class
 	// outranks the global paragraph line height from theme.json.
 	& &__title {
@@ -124,8 +126,11 @@
 	}
 }
 
-// Tablet and phone: the logo height steps down so rows of two still fit.
-@media (max-width: 781px) {
+// The logo height steps down just before the logos at full height stop fitting
+// on one line (the four logos of the site at the default 60px and the widest
+// gap between them: 668px of logos and 3 x 40px), so they do not go onto two
+// lines first and back onto one line when they get smaller.
+@container (max-width: 788px) {
 	.mw-logos__row > img,
 	.mw-logos__item img {
 		max-height: calc(var(--mw-logos-cap) * 0.75);
